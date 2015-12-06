@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="radioButtonColor">#4cd0ff</color>
+    <color name="roomButtonColor">#03dc72</color>
+    <color name="noButtonBackgroundColor">#4a4a4a</color>
+    <color name="yesButtonBackgroundColor">#4cd0ff</color>
+    <color name="noButtonTextColor">#9b9b9b</color>
+    <color name="black">#000000</color>
+    <color name="red">#d0021b</color>
+    <color name="listItemBackgroundColor">#2a2a2a</color>
+    <color name="checkinoutColor">#03dc72</color>
+    <color name="checkedoutColor">#ff5304</color>
+    <color name="buttonTextColor">#9b9b9b</color>
+    <color name="listviewBackgroundColor">#585858</color>
+    <color name="progress_wheel">#03A9F4</color>
+</resources>

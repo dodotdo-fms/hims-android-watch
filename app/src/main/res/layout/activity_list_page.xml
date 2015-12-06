@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.voice_messaging.ChannelListActivity"
+    android:background="#000">
+
+
+    <ListView
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="4dp"
+        android:divider="#000"
+        android:id="@+id/list"
+        />
+
+
+   \
+
+
+    <FrameLayout
+        android:id="@+id/back"
+        android:onClick="onClick"
+        android:layout_width="160dp"
+        android:layout_height="93dp"
+        android:background="@color/checkinoutColor"
+        >
+        <ImageView
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:onClick="onClick"
+            android:src="@drawable/back_white"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/historyButton"
+        android:onClick="onClick"
+        android:layout_width="160dp"
+        android:layout_height="93dp"
+        android:background="@color/yesButtonBackgroundColor"
+        android:layout_alignParentRight="true"
+        >
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="47dp"
+            android:text="History"
+            android:textSize="37sp"
+            android:textColor="@color/white"
+
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+</RelativeLayout>

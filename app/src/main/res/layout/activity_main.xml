@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#000">
+
+
+    <ImageView
+        android:onClick="onClick"
+        android:layout_width="121dp"
+        android:layout_height="121dp"
+        android:id="@+id/on_btn"
+        android:src="@drawable/on_icon"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="100dp"
+    />
+
+    <ImageView
+        android:onClick="onClick"
+        android:layout_width="121dp"
+        android:layout_height="121dp"
+        android:id="@+id/off_btn"
+        android:src="@drawable/off_icon"
+        android:layout_marginTop="170dp"
+        android:layout_marginLeft="100dp"
+    />
+
+
+
+</RelativeLayout>

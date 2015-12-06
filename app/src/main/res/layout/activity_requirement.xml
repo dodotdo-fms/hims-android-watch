@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.scheduler.RequirementActivity" >
+
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:id="@+id/back"
+        android:onClick="onClick"
+        android:src="@drawable/back"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp" />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:maxLines="2"
+        android:hint="Requirement"
+        android:background="#000"
+        android:textColor="#fff"
+        android:id="@+id/txtRequirement"
+        android:textSize="19pt"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="90dp"
+    />
+
+    <ImageView
+        android:layout_width="283dp"
+        android:layout_height="83dp"
+        android:id="@+id/submitRequirement"
+        android:onClick="onClick"
+        android:src="@drawable/submit"
+        android:layout_below="@id/txtRequirement"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="18dp"/>
+    
+</RelativeLayout>

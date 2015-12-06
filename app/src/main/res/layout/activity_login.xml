@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.scheduler.LoginActivity"
+    android:background="#000">
+
+
+    <ListView
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="300dp"
+        android:layout_height="208dp"
+        android:dividerHeight="4dp"
+        android:divider="#000"
+        android:id="@+id/list" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="@drawable/blackbar"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/room_time"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="#9a9ca6"
+            android:paddingTop="2px"
+            android:paddingRight="8px"
+            android:textSize = "11pt"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:id="@+id/room_back"
+        android:onClick="back_click"
+        android:src="@drawable/back"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp" />
+
+</RelativeLayout>

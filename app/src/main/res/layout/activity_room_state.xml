@@ -1,0 +1,218 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.scheduler.RoomStateActivity"
+    android:background="#000">
+
+
+    <ImageView
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:id="@+id/room_back"
+        android:onClick="back_click"
+        android:src="@drawable/back"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:layout_width="152dp"
+        android:layout_height="78dp"
+        android:text="1002"
+        android:id="@+id/tv_roomNumber"
+        android:textSize = "67sp"
+        android:textColor="@color/red"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+    />
+
+    <TextView
+        android:layout_width="152dp"
+        android:layout_height="39dp"
+        android:text="@string/in"
+        android:textSize = "33sp"
+        android:textColor="@color/checkinoutColor"
+        android:layout_marginTop="93dp"
+        android:layout_marginLeft="16dp"
+        />
+
+    <TextView
+        android:layout_width="152dp"
+        android:layout_height="39dp"
+        android:text="@string/out"
+        android:textSize = "33sp"
+        android:textColor="@color/checkinoutColor"
+        android:layout_marginTop="132dp"
+        android:layout_marginLeft="16dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_inTime"
+        android:layout_width="177dp"
+        android:layout_height="39dp"
+        android:text="@string/in"
+        android:textSize = "33sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="93dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="39dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_outTime"
+        android:layout_width="177dp"
+        android:layout_height="39dp"
+        android:text="-"
+        android:textSize = "33sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="132dp"
+        android:layout_marginRight="39dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:text="@string/checkedOut"
+        android:textSize = "33sp"
+        android:textColor="@color/checkedoutColor"
+        android:layout_marginTop="172dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/tv_checkedOut"
+        />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_marginTop="213dp"
+>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_requirement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:textSize="40sp"
+                android:textColor="@color/white"
+                />
+        <RelativeLayout
+            android:layout_below="@+id/tv_requirement"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <Button
+                android:id="@+id/btn_vc"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/button_background"
+                android:text="@string/vc"
+                android:gravity="center"
+
+                android:textSize="53sp"
+                android:textColor="@color/buttonTextColor"
+                />
+
+            <Button
+                android:id="@+id/btn_oc"
+                android:layout_marginTop="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/button_background"
+                android:text="@string/oc"
+                android:textSize="53sp"
+                android:textColor="@color/buttonTextColor"
+                />
+
+            <Button
+                android:id="@+id/btn_dnd"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/button_background"
+                android:text="@string/dnd"
+                android:textSize="53sp"
+                android:textColor="@color/buttonTextColor"
+                android:layout_marginTop="200dp"
+                />
+
+            <Button
+                android:id="@+id/btn_rsa"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/button_background"
+                android:text="@string/rsa"
+                android:textSize="53sp"
+                android:textColor="@color/buttonTextColor"
+                android:layout_marginTop="300dp"
+                />
+        </RelativeLayout>
+                    </RelativeLayout>
+
+    </ScrollView>
+    <!-- -->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="320dp"-->
+        <!--android:layout_height="320dp"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:background="#000"-->
+        <!--android:id="@+id/lay">-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_marginLeft="60dp"-->
+            <!--android:layout_marginTop="60dp"-->
+            <!--android:background="#242424">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Are you sure you want to complete?"-->
+                <!--android:textColor="#fff"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:textSize = "9pt"/>-->
+
+            <!--<ImageView-->
+                <!--android:onClick="onClick"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="0dp"-->
+                <!--android:layout_marginTop="137dp"-->
+                <!--android:src="@drawable/no_icon"-->
+                <!--android:id="@+id/no_btn"-->
+                <!--/>-->
+            <!-- -->
+            <!--<ImageView-->
+                <!--android:onClick="onClick"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="140dp"-->
+                <!--android:layout_marginTop="137dp"-->
+                <!--android:src="@drawable/yes_icon"-->
+                <!--android:id="@+id/yes_btn"-->
+                <!--/>-->
+        <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+    
+</RelativeLayout>

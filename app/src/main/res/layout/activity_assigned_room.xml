@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.scheduler.AssignedRoomActivity"
+    android:background="#000">
+    <ListView
+        android:layout_marginTop="93dp"
+        android:layout_marginLeft="13dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_room"
+        android:dividerHeight="1dp"
+        android:divider="#000"
+        />
+
+
+
+    <!--<RelativeLayout--> -->
+
+    <ImageView
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:id="@+id/room_back"
+        android:onClick="back_click"
+        android:src="@drawable/back"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp" />
+    
+    <TextView
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="23dp"
+        android:textSize="67sp"
+        android:text="2"
+        android:id="@+id/tv_willCleanRoom"
+        android:textColor="@color/red"
+        android:layout_width="39dp"
+        android:layout_height="78dp" />
+    
+ >
+
+</RelativeLayout>

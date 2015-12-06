@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.mycom.hims.voice_messaging.UIPageActivity"
+        android:background="#44000000">
+
+        <ImageView
+            android:id="@+id/delete_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="120dp"
+            android:src="@drawable/delete_channel"/>
+
+        <ImageView
+            android:id="@+id/channel_delete_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="180dp"
+            android:src="@drawable/channel_delete_cancel"/>
+
+
+    </RelativeLayout>
+
+    <!--<menu xmlns:android="http://schemas.android.com/apk/res/android" >-->
+
+        <!--<item android:id="@+id/delete_pop"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="270dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:src="@drawable/delete_pop"-->
+            <!--android:title="Delete"/>-->
+
+        <!--<item android:id="@+id/cancel_pop"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="270dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:src="@drawable/cancel_pop"-->
+            <!--android:title="Cancel"/>-->
+
+
+    <!--</menu>-->

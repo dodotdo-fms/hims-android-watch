@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="80dp"
+    android:background="@color/listItemBackgroundColor"
+    >
+
+
+
+    <ImageView
+        android:layout_width="83dp"
+        android:layout_height="107dp"
+        android:id="@+id/bar"
+        android:src="@color/yesButtonBackgroundColor"
+         />
+
+    <TextView
+        android:layout_toRightOf="@+id/bar"
+        android:layout_width="121dp"
+        android:layout_height="63dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="10dp"
+        android:text="1011"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="53sp"
+        android:id="@+id/room_name" />
+
+    <ImageView
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="14dp"
+        android:id="@+id/inspec_image"
+        android:layout_width="41dp"
+        android:layout_height="64dp"
+        android:src="@drawable/manicon2"
+    />
+
+
+
+</RelativeLayout>

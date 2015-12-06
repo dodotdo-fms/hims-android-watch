@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mycom.hims">
+
+    <uses-sdk android:minSdkVersion="9" />
+
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- YJ ADD -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- YSKIM ADD -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".Common.App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".ScreenService" />
+
+        <receiver android:name=".ScreenReceiver" />
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".LockScreenActivity"
+            android:label="@string/title_activity_lock_screen" />
+        <activity
+            android:name=".scheduler.RoomActivity"
+            android:label="@string/title_activity_room" />
+        <activity
+            android:name=".scheduler.SearchActivity"
+            android:label="@string/title_activity_search" />
+        <activity
+            android:name=".scheduler.RoomDetailActivity"
+            android:label="@string/title_activity_room_detail_activity" />
+        <activity
+            android:name=".scheduler.RoomStateActivity"
+            android:label="@string/title_activity_room_information" />
+        <activity
+            android:name=".scheduler.InspectionActivity"
+            android:label="@string/title_activity_inspection" />
+        <activity
+            android:name=".scheduler.ShortEvaluationActivity"
+            android:label="@string/title_activity_short_form" />
+        <activity
+            android:name=".scheduler.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".scheduler.PasswordActivity"
+            android:label="@string/title_activity_password" />
+
+        <service
+            android:name=".voice_messaging.ForegroundService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".voice_messaging.ChannelListActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".voice_messaging.MessageSendActivity"
+            android:label="@string/title_activity_sending_page" />
+        <activity
+            android:name=".voice_messaging.HistoryActivity"
+            android:label="@string/title_activity_history_page" />
+        <activity
+            android:name=".voice_messaging.PeerSelectionActivity"
+            android:label="@string/title_activity_peer_selection" />
+        <activity
+            android:name=".voice_messaging.ChannelCreationActivity"
+            android:label="@string/title_activity_channel_creation" />
+        <activity
+            android:name=".voice_messaging.UIPageActivity"
+            android:label="@string/title_activity_ui_page" />
+        <activity
+            android:name=".scheduler.AssignedRoomActivity"
+            android:label="@string/title_activity_assigned_room" />
+        <activity
+            android:name=".scheduler.RequirementActivity"
+            android:label="@string/title_activity_requirement" />
+        <activity
+            android:name=".MainStaffActivity"
+            android:label="@string/title_activity_main_staff" />
+        <activity
+            android:name=".DialogActivity.LogoutDialogAcitivity"
+            android:label="@string/title_activity_logout_dialog_acitivity" />
+        <activity
+            android:name=".DialogActivity.RoomAlreadyCleanDialogAcitivity"
+            android:label="@string/title_activity_room_already_clean_dialog_acitivity" />
+        <activity
+            android:name=".DialogActivity.ChanelAddDialogActivity"
+            android:label="@string/title_activity_chanel_add_dialog" />
+        <activity
+            android:name=".voice_messaging.ChannelMemberListActivity"
+            android:label="@string/title_activity_channel_member_list" />
+        <activity
+            android:name=".DialogActivity.AreYouSureDialogActivity"
+            android:label="@string/title_activity_are_you_sure_dialog"></activity>
+    </application>
+
+</manifest>

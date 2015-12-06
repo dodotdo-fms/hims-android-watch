@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.example.mycom.hims.voice_messaging.UIPageActivity"
+    android:background="#000">
+
+
+    <ImageView
+        android:id="@+id/rcvd_msg"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="11dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/play"
+        android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/ui_cancel"
+        android:onClick="onClick"
+        android:layout_width="120dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="177dp"
+        android:text="@string/cancel"
+        android:textSize="30sp"
+        android:textColor="@color/buttonTextColor"
+        android:background="@color/noButtonBackgroundColor"/>
+
+    <Button
+        android:id="@+id/ui_reply"
+        android:onClick="onClick"
+        android:layout_width="120dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="177dp"
+        android:layout_toRightOf="@+id/ui_cancel"
+        android:text="@string/reply"
+        android:textSize="30sp"
+        android:textColor="@color/noButtonBackgroundColor"
+        android:background="@color/yesButtonBackgroundColor"
+        />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#fff"
+        android:textSize="12pt"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="70dp"
+  />
+
+    <TextView
+        android:id="@+id/received_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#9a9ca6"
+        android:textSize="9pt"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="120dp"
+        />
+</RelativeLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.DialogActivity.LogoutDialogAcitivity">
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="197dp"
+    android:text="@string/logoutDialogText"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="33sp"
+        />
+    
+    <Button
+        android:id="@+id/btn_no"
+        android:layout_width="160dp"
+        android:layout_height="123dp"
+        android:layout_marginTop="197dp"
+        android:background="@color/noButtonBackgroundColor"
+        android:text="@string/no"
+        android:textSize="53sp"
+        android:textColor="@color/noButtonTextColor"
+        />
+
+    <Button
+        android:id="@+id/btn_yes"
+        android:layout_width="160dp"
+        android:layout_height="123dp"
+        android:layout_marginTop="197dp"
+        android:layout_marginLeft="160dp"
+        android:background="@color/yesButtonBackgroundColor"
+        android:text="@string/yes"
+        android:textSize="53sp"
+        android:textColor="@color/black"
+        />
+    
+</RelativeLayout>

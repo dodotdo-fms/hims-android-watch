@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.voice_messaging.MessageSendActivity"
+    android:background="#000">
+
+
+
+
+
+
+            <Button
+                android:layout_marginTop="110dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_height="203dp"
+                android:id="@+id/button"
+                android:background="@drawable/main_btn"
+                android:layout_centerHorizontal="true" />
+
+
+    <FrameLayout
+        android:id="@+id/list"
+        android:onClick="onClick"
+        android:layout_width="160dp"
+        android:layout_height="93dp"
+        android:background="@color/checkinoutColor"
+        >
+        <ImageView
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:onClick="onClick"
+            android:src="@drawable/back_white"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="160dp"
+        >
+        <com.example.mycom.hims.View.TimerView
+            android:layout_marginTop="4dp"
+            android:id="@+id/timer"
+            android:layout_marginLeft="51dp"
+            android:gravity="right"
+            android:layout_width="91dp"
+            android:layout_height="32dp"
+            android:textSize="27sp"
+            android:textColor="@color/buttonTextColor"
+            />
+        
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="127dp"
+            android:layout_height="53dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:layout_marginTop="36dp"
+            android:layout_marginLeft="7dp"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="16dp"
+            android:layout_height="14dp"
+            android:src="@drawable/small_message"
+            android:layout_marginTop="44dp"
+            android:layout_marginLeft="137dp"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
+   
+
+
+</RelativeLayout>

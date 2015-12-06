@@ -1,0 +1,156 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mycom.hims.LockScreenActivity"
+    android:background="@drawable/main_back">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49px"
+        android:background="@drawable/green_bar"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/time"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="#fff"
+            android:paddingTop="2px"
+            android:paddingRight="8px"
+            android:textSize = "11pt"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/date"
+            android:layout_alignParentLeft="true"
+            android:textColor="#fff"
+            android:paddingTop="7.7px"
+            android:paddingLeft="8px"
+            android:textSize = "7pt"
+        />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="117px"
+        android:layout_height="67px"
+        android:id="@+id/search_btn"
+        android:onClick="moving_click"
+        android:src="@drawable/search_btn"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+ />
+
+    <ImageView
+        android:layout_width="117px"
+        android:layout_height="67px"
+        android:id="@+id/walkie_btn"
+        android:onClick="moving_click"
+        android:src="@drawable/radio_btn"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:layout_width="117px"
+        android:layout_height="67px"
+        android:id="@+id/room_btn"
+        android:onClick="moving_click"
+        android:src="@drawable/room_btn"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="10dp"
+        android:layout_above="@+id/search_btn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/staff_radio_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:visibility="gone"
+        android:onClick="moving_click"
+        android:src="@drawable/staff_radio_btn" />
+
+    <ImageView
+        android:id="@+id/staff_room_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/staff_radio_btn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="4dp"
+        android:visibility="gone"
+        android:onClick="moving_click"
+        android:src="@drawable/staff_room_btn" />
+
+    <ImageView
+        android:layout_width="81dp"
+        android:layout_height="49dp"
+        android:id="@+id/logout_btn"
+        android:onClick="moving_click"
+        android:src="@drawable/logout_gray"
+        android:layout_marginLeft="224dp"
+        android:layout_marginTop="84dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lay"
+        android:background="#000">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/x_btn"
+            android:layout_marginLeft="270dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/popup_x"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="200dp"
+            android:id="@+id/no_btn"
+            android:onClick="moving_click"
+            android:src="@drawable/no_icon"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="200dp"
+            android:id="@+id/yes_btn"
+            android:onClick="moving_click"
+            android:src="@drawable/yes_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you sure you\nwant to log out?"
+            android:textColor="#fff"
+            android:textSize="11pt"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="70dp"
+            />
+
+
+        </RelativeLayout>
+</RelativeLayout>
