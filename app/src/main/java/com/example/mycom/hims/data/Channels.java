@@ -62,4 +62,9 @@ public class Channels {
 
         return channelHashMap.get(String.valueOf(id));
     }
+
+    public void clean(){
+        channels.clear();
+        channelHashMap.clear();
+    }
 }

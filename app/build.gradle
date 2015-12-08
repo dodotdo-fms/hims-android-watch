@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -22,8 +22,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile files('src/main/libs/gson-2.4.jar')
+    //    compile files('src/main/libs/gson-2.4.jar')
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.pnikosis:materialish-progress:1.4'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
+    compile "com.google.android.gms:play-services:8.3.0"
+
 }

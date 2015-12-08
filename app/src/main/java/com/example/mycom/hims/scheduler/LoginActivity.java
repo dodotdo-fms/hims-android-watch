@@ -1,6 +1,5 @@
 package com.example.mycom.hims.scheduler;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,30 +15,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
 import com.example.mycom.hims.LockScreenActivity;
 import com.example.mycom.hims.MainActivity;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.data.Users;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
 import com.example.mycom.hims.model.User;
 import com.example.mycom.hims.model.api_response.GetUsersResponse;
 import com.example.mycom.hims.model.api_response.LoginResponse;
-import com.example.mycom.hims.server_interface.QueryHimsServer;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
-import com.example.mycom.hims.thread.TimerDisplayThread;
-import com.example.mycom.hims.thread.VMReceiverThread;
+import com.example.mycom.hims.server_interface.ServerCallback;
+import com.example.mycom.hims.server_interface.ServerQuery;
+import com.example.mycom.hims.server_interface.ServiceGenerator;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
-public class LoginActivity extends Activity implements OnAsyncTaskCompleted{
+public class LoginActivity extends CommonActivity{
     private TextView room_time;
     private Typeface font;
     private ListView mListView = null;
@@ -53,8 +48,9 @@ public class LoginActivity extends Activity implements OnAsyncTaskCompleted{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        isUseLoadingDialog = true;
         setContentView(R.layout.activity_login);
+        super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences("PrefName", MODE_PRIVATE);
         p_userID = prefs.getString("p_UserID", "");
         p_UserPass = prefs.getString("p_UserPass", "");
@@ -62,62 +58,102 @@ public class LoginActivity extends Activity implements OnAsyncTaskCompleted{
         font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         room_time = (TextView)findViewById(R.id.room_time);
 
-        SchedulerServerAPI.getUsersAsync(null, null, null, null, this);
+        getUsers();
+
+
+
+
     }
 
-    @Override
-    public void onAsyncTaskCompleted(InputStream inputStream) {
-        if (inputStream != null) {
-	    	Reader reader = new InputStreamReader(inputStream);
-	        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-	        
-	        GetUsersResponse response = gson.fromJson(reader, GetUsersResponse.class);
-	        if (response != null && response.getUsers() != null && response.getUsers().size() > 0) {
-		        Users.getInstance().setUsers(response.getUsers());
-		        
-		        	if (Users.getInstance().isExistMe(p_userID)) {
-		        		my_id = p_userID;
-		        		Toast.makeText(LoginActivity.this, "AutoLogin: " + p_userID, Toast.LENGTH_LONG).show();
-                        MySharedPreferencesManager.getInstance().putMyID(my_id);
-		        		String userPW = MySharedPreferencesManager.getInstance().getMyPassword();
-		        		
-		        		if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
-		        			InputStream loginIS = SchedulerServerAPI.login(my_id, userPW);
-		        			Reader loginReader = new InputStreamReader(loginIS);
-		        			LoginResponse loginRes = gson.fromJson(loginReader, LoginResponse.class);
-		        			if (loginRes != null && !TextUtils.isEmpty(loginRes.getToken())) {
-                                MyAccount.getInstance().setPosition(loginRes.getPosition());
-		        				QueryHimsServer.setToken(loginRes.getToken());
-		        				Intent lockScreenIntent = new Intent(LoginActivity.this, LockScreenActivity.class);
-		        				lockScreenIntent.putExtra("position", loginRes.getPosition());
-                                MyAccount.getInstance().setPosition(loginRes.getPosition());
-                                MySharedPreferencesManager.getInstance().setMyPosition(loginRes.getPosition());
-		    	        		startActivity(lockScreenIntent);
-		    	        		return;
-		        			}
-		        		}
-		        		
-		        	}
 
-		        
-		        mListView = (ListView) findViewById(R.id.list);
-		        mAdapter = new ListViewAdapter(this);
-		        mListView.setAdapter(mAdapter);
-		        
-		        mAdapter.notifyDataSetChanged();
-		        
-		        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						User user = mAdapter.getItem(position);
-						Intent passwordIntent = new Intent(LoginActivity.this, PasswordActivity.class);
-						passwordIntent.putExtra("name", user.getName());
-						passwordIntent.putExtra("id", user.getId());
-						startActivity(passwordIntent);
-					}
-		        });
-	        }
-        }
+    private void getUsers(){
+        showLoadingDialog();
+        ServerQuery.getUsers(new ServerCallback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+                GetUsersResponse result = (GetUsersResponse) response.body();
+                if (result != null && result.getUsers() != null && result.getUsers().size() > 0) {
+                    Users.getInstance().setUsers(result.getUsers());
+                    if (Users.getInstance().isExistMe(p_userID)) {
+                        my_id = p_userID;
+                        Toast.makeText(LoginActivity.this, "AutoLogin: " + p_userID, Toast.LENGTH_LONG).show();
+                        MySharedPreferencesManager.getInstance().putMyID(my_id);
+                        String userPW = MySharedPreferencesManager.getInstance().getMyPassword();
+
+                        if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
+                            goLogin(userPW);
+                        }
+
+                    }
+                }
+
+                listViewInit();
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(int statuscode) {
+                super.onFailure(statuscode);
+                hideLoadingDialog();
+            }
+        });
+    }
+
+    private void goLogin(String pw){
+        showLoadingDialog();
+        ServerQuery.goLogin(my_id, pw, new ServerCallback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+                LoginResponse result = (LoginResponse) response.body();
+                if (result != null && !TextUtils.isEmpty(result.getToken())) {
+                    MyAccount.getInstance().setPosition(result.getPosition());
+                    MyAccount.getInstance().setId(my_id);
+                    ServiceGenerator.setToken(result.getToken());
+                    Intent lockScreenIntent = new Intent(LoginActivity.this, LockScreenActivity.class);
+                    lockScreenIntent.putExtra("position", result.getPosition());
+                    MyAccount.getInstance().setPosition(result.getPosition());
+                    MySharedPreferencesManager.getInstance().setMyPosition(result.getPosition());
+                    startActivity(lockScreenIntent);
+                    return;
+                }
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(int statuscode) {
+                super.onFailure(statuscode);
+                hideLoadingDialog();
+            }
+        });
+    }
+
+    private void listViewInit(){
+        mListView = (ListView) findViewById(R.id.list);
+        mAdapter = new ListViewAdapter(getApplicationContext());
+        mListView.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = mAdapter.getItem(position);
+                Intent passwordIntent = new Intent(LoginActivity.this, PasswordActivity.class);
+                passwordIntent.putExtra("name", user.getName());
+                passwordIntent.putExtra("id", user.getId());
+                startActivity(passwordIntent);
+            }
+        });
     }
 
     public void back_click(View v) {
@@ -129,21 +165,7 @@ public class LoginActivity extends Activity implements OnAsyncTaskCompleted{
         		break;
     	}
 }
-    @Override
-    protected void onStart(){
-        super.onStart();
-        TimerDisplayThread.timeDisplayView = room_time;
-        TimerDisplayThread.dateDisplayView = null;
-        VMReceiverThread.shouldDisplay = false;
-    }
 
-    @Override
-    protected void onDestroy() {
-        TimerDisplayThread.timeDisplayView = null;
-        TimerDisplayThread.dateDisplayView = null;
-        VMReceiverThread.shouldDisplay = false;
-        super.onDestroy();
-    }
 
     @Override
 	public void onBackPressed() {

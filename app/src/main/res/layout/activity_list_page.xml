@@ -5,17 +5,15 @@
     android:background="#000">
 
 
-    <ListView
+
+
+    <com.example.mycom.hims.View.MyRecyclerView
+        android:id="@+id/list"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dividerHeight="4dp"
-        android:divider="#000"
-        android:id="@+id/list"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
         />
-
-
-   \
 
 
     <FrameLayout
@@ -26,6 +24,7 @@
         android:background="@color/checkinoutColor"
         >
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:onClick="onClick"

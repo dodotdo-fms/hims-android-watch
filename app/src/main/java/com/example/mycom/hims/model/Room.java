@@ -45,8 +45,6 @@ public class Room {
 	@SerializedName("inspect_assigned_datetime")
 	private Date inspectAssignedDate;
 	
-	@SerializedName("evaluation")
-	private Evaluation evaluation;
 
 	public int getNumber() {
 		return number;
@@ -152,13 +150,7 @@ public class Room {
 		this.inspectAssignedDate = inspectAssignedDate;
 	}
 
-	public Evaluation getEvaluation() {
-		return evaluation;
-	}
 
-	public void setEvaluation(Evaluation evaluation) {
-		this.evaluation = evaluation;
-	}
 
 
 	public String toString(){

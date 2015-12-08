@@ -3,17 +3,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.mycom.hims.scheduler.AssignedRoomActivity"
     android:background="#000">
-    <ListView
-        android:layout_marginTop="93dp"
-        android:layout_marginLeft="13dp"
+
+    <include layout="@layout/view_loading"
+        android:id="@+id/view_loading"
+        />
+    <com.example.mycom.hims.View.MyRecyclerView
+        android:id="@+id/list_room"
+        android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_room"
-        android:dividerHeight="1dp"
-        android:divider="#000"
+        android:scrollbars="vertical"
         />
-
-
 
     <!--<RelativeLayout--> -->
 
@@ -30,7 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="23dp"
         android:textSize="67sp"
-        android:text="2"
+        android:text=""
         android:id="@+id/tv_willCleanRoom"
         android:textColor="@color/red"
         android:layout_width="39dp"

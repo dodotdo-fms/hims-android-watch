@@ -54,8 +54,8 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="ok">ok</string>
-    <string name="logoutDialogText">Are you sure you\nwant to log out?</string>
-    <string name="roomAlreadyCleanDialogText">This room is\nalready cleaned.</string>
+    <string name="logoutDialogText">Are you sure?</string>
+    <string name="roomAlreadyCleanDialogText">This room\n has been cleaned.</string>
     <string name="title_activity_room_already_clean_dialog_acitivity">
         RoomAlreadyCleanDialogAcitivity
     </string>
@@ -72,5 +72,5 @@
     <string name="cancel">Cancel</string>
     <string name="reply">Reply</string>
     <string name="title_activity_are_you_sure_dialog">AreYouSureDialogActivity</string>
-    <string name="areYouSure">are you sure you \n want to complete?</string>
+    <string name="areYouSure">Are you sure?</string>
 </resources>

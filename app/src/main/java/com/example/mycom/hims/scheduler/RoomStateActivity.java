@@ -17,74 +17,49 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.DialogActivity.AreYouSureDialogActivity;
 import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.data.Rooms;
-import com.example.mycom.hims.model.Requirement;
 import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
 import com.example.mycom.hims.server_interface.SchedulerServerAPI;
+import com.example.mycom.hims.server_interface.ServerCallback;
+import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class RoomStateActivity extends CommonActivity implements OnAsyncTaskCompleted {
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+public class RoomStateActivity extends CommonActivity {
     private TextView mTv_roomNumber;
     private Typeface font;
     Button mBtn_vc,mBtn_dnd,mBtn_rsa,mBtn_oc;
     TextView mTv_inTime,mTv_outTime,mTv_checkedOut,mTv_requirment;
     int room_number;
     Room room;
-
-
-    @Override
-    public void onAsyncTaskCompleted(InputStream inputStream) {
-    	if (inputStream != null) {
-    		Reader reader = new InputStreamReader(inputStream);
-    		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    		GetRoomsResponse response = gson.fromJson(reader, GetRoomsResponse.class);
-
-
-        	if (response != null && response.getRooms() != null && response.getRooms().size() > 0) {
-                room = response.getRooms().get(0);
-
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
-
-                if (room.getRequirement() != null && !TextUtils.isEmpty(room.getRequirement().getOrigin())) {
-                	mTv_requirment.setText(room.getRequirement().getOrigin());
-                } else {
-                    mTv_requirment.setText("");
-                    mTv_requirment.setEnabled(false);
-                }
-
-                if (room.getArrivalDate() != null && room.getDepartureDate() != null) {
-                	mTv_inTime.setText(sdf.format(room.getArrivalDate()));
-                    mTv_outTime.setText(sdf.format(room.getDepartureDate()));
-                    if (room.getDepartureDate().before(new Date())) {
-                    	mTv_checkedOut.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                	mTv_inTime.setText("--/--");
-                    mTv_outTime.setText("--/--");
-                    mTv_checkedOut.setVisibility(View.GONE);
-                }
-                
-
-                
-        	}
-    	}
-    	
-
-    }
-
+    ImageView mBtn_back;
+    ScrollView mScrollView;
+    boolean scrollCheck = false;
+    View mView_header;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_room_state);
+        isUseLoadingDialog = true;
         super.onCreate(savedInstanceState);
 
 
@@ -166,29 +141,16 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         Log.e("roo",room.getState()+"a");
     	if ("OC".equals(room.getState())) {
             mBtn_oc.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_c));
+            mBtn_oc.setTextColor(getResources().getColor(R.color.white));
     	} else if ("DND".equals(room.getState())) {
             mBtn_dnd.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_dnd_rsa));
+            mBtn_dnd.setTextColor(getResources().getColor(R.color.white));
     	} else if ("VC".equals(room.getState())) {
             mBtn_vc.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_c));
-
+            mBtn_vc.setTextColor(getResources().getColor(R.color.white));
     	} else if ("RSA".equals(room.getState())) {
             mBtn_rsa.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_dnd_rsa));
-        }
-    }
-    public void back_click(View v){
-        switch(v.getId()){
-            case R.id.room_back:
-//                if ("manager".equals(position)) {
-//                    int selectedFloor = room_number / 100;
-//                    Intent intent = new Intent(RoomStateActivity.this, RoomDetailActivity.class);
-//                    intent.putExtra("now_floor", selectedFloor);
-//                    startActivity(intent);
-//                } else {
-                	Intent assignedRoomIntent = new Intent(RoomStateActivity.this, AssignedRoomActivity.class);
-            		startActivity(assignedRoomIntent);
-//                }
-            	finish();
-                break;
+            mBtn_rsa.setTextColor(getResources().getColor(R.color.white));
         }
     }
 
@@ -213,6 +175,7 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         mBtn_oc = (Button)findViewById(R.id.btn_oc);
         mBtn_rsa = (Button)findViewById(R.id.btn_rsa);
         mBtn_vc = (Button)findViewById(R.id.btn_vc);
+        mBtn_back = (ImageView)findViewById(R.id.room_back);
 
         mTv_checkedOut = (TextView)findViewById(R.id.tv_checkedOut);
         mTv_inTime = (TextView)findViewById(R.id.tv_inTime);
@@ -220,6 +183,9 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         mTv_requirment = (TextView)findViewById(R.id.tv_requirement);
         mTv_roomNumber = (TextView)findViewById(R.id.tv_roomNumber);
 
+        mScrollView = (ScrollView)findViewById(R.id.scrollView);
+
+        mView_header = (View)findViewById(R.id.view_header);
     }
 
     @Override
@@ -228,7 +194,7 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         mBtn_dnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                goDialogActivity("DND");
+                goDialogActivity("DND");
             }
         });
 
@@ -242,7 +208,7 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         mBtn_rsa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                goDialogActivity("RSA");
+                goDialogActivity("RSA");
             }
         });
 
@@ -264,6 +230,38 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
             }
         });
 
+        mBtn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent assignedRoomIntent = new Intent(RoomStateActivity.this, AssignedRoomActivity.class);
+                startActivity(assignedRoomIntent);
+                finish();
+            }
+        });
+
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                Log.e("y",mScrollView.getY()+":"+mScrollView.getScrollY());
+                if (mScrollView.getScrollY() == 0 && mScrollView.getY() == 0&& scrollCheck == true) {
+                    Log.e("y111","A");
+                    scrollCheck = false;
+                    mView_header.setVisibility(View.VISIBLE);
+                    Animation ani = new TranslateAnimation(0, 0, -100, 0);
+                    ani.setDuration(100);
+                    mView_header.startAnimation(ani);
+
+                } else if (mScrollView.getScrollY() > 0 && mScrollView.getY() > 0&& scrollCheck == false) {
+                    Log.e("y222", "A");
+                    scrollCheck = true;
+                    Animation ani = new TranslateAnimation(0, 0, 0, -100);
+                    ani.setDuration(100);
+                    mView_header.startAnimation(ani);
+                    mView_header.setVisibility(View.GONE);
+              ;
+                }
+            }
+        });
     }
 
     private void goDialogActivity(String state){
@@ -272,18 +270,32 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
     }
 
     private void goPost(String state){
-        Log.e("state","sta"+state);
-        InputStream cleanIS = SchedulerServerAPI.postClean(String.valueOf(room_number), state);
-            	if (cleanIS != null) {
-            		Reader reader = new InputStreamReader(cleanIS);
-            		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                	PostCleanResponse response = gson.fromJson(reader, PostCleanResponse.class);
-        			if (response != null && "success".equals(response.getResult())) {
-        				Intent assignedRoomIntent = new Intent(RoomStateActivity.this, AssignedRoomActivity.class);
-                        startActivity(assignedRoomIntent);
-                        finish();
-        			}
-            	}
+        showLoadingDialog();
+        ServerQuery.postClean(String.valueOf(room_number), state, new ServerCallback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+
+                    PostCleanResponse result = (PostCleanResponse)response.body();
+                if (result != null && "success".equals(result.getResult())) {
+                    Intent assignedRoomIntent = new Intent(RoomStateActivity.this, AssignedRoomActivity.class);
+                    startActivity(assignedRoomIntent);
+                }
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(getApplicationContext(),"please try again",Toast.LENGTH_SHORT).show();
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(int statuscode) {
+                super.onFailure(statuscode);
+                hideLoadingDialog();
+            }
+        });
+
     }
 
     @Override
@@ -297,8 +309,59 @@ public class RoomStateActivity extends CommonActivity implements OnAsyncTaskComp
         mTv_roomNumber.setTypeface(font);
         mTv_roomNumber.setText(String.valueOf(room_number));
         set_state_color();
-        Log.e("roomnumber",room_number+"");
-        SchedulerServerAPI.getRoomsAsync(String.valueOf(room_number), null, null, null, this);
+        refresh();
+
+    }
+
+    private void refresh(){
+        showLoadingDialog();
+        ServerQuery.getRooms(null, null, null, String.valueOf(room_number), null, new ServerCallback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+                GetRoomsResponse result = (GetRoomsResponse)response.body();
+                if (result != null && result.getRooms() != null && result.getRooms().size() > 0) {
+                    room = result.getRooms().get(0);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
+
+                    if (room.getRequirement() != null && !TextUtils.isEmpty(room.getRequirement().getOrigin())) {
+                        mTv_requirment.setText(room.getRequirement().getOrigin());
+                    } else {
+                        mTv_requirment.setText("");
+                        mTv_requirment.setEnabled(false);
+                    }
+
+                    if (room.getArrivalDate() != null && room.getDepartureDate() != null) {
+                        mTv_inTime.setText(sdf.format(room.getArrivalDate()));
+                        mTv_outTime.setText(sdf.format(room.getDepartureDate()));
+                        if (room.getDepartureDate().before(new Date())) {
+                            mTv_checkedOut.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        mTv_inTime.setText("--/--");
+                        mTv_outTime.setText("--/--");
+                        mTv_checkedOut.setVisibility(View.GONE);
+                    }
+
+
+
+                }
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                finish();
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(int statuscode) {
+                super.onFailure(statuscode);
+                hideLoadingDialog();
+            }
+        });
+
 
     }
 

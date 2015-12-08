@@ -19,7 +19,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("dd1", "dd1");
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             if (km == null)
                 km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
@@ -30,11 +29,8 @@ public class ScreenReceiver extends BroadcastReceiver {
                 telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
                 telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
             }
-            Log.e("dd1", "dd2");
-            Log.e("isPhoneIdle", isPhoneIdle+"");
             if(isPhoneIdle){
                 disableKeyguard();
-                Log.e("dd1", "dd3");
                 Intent i = new Intent(context, LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);

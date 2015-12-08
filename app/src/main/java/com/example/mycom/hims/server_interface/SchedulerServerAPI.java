@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.mycom.hims.OnAsyncTaskCompleted;
-import com.example.mycom.hims.model.Evaluation;
 import com.google.gson.Gson;
 
 /**
@@ -218,63 +217,8 @@ public class SchedulerServerAPI {
 		QueryHimsServer.makeGetRequest(builder.build().toString(), callbackTask);
     }
 
-	public static InputStream sendEvaluation(String room, String type, List<Evaluation> evaluations) {
-		JSONObject request = new JSONObject();
-		InputStream response = null;
 
-		if (!TextUtils.isEmpty(room) && !TextUtils.isEmpty(type) && evaluations != null && evaluations.size() > 0) {
-			Uri.Builder builder = new Uri.Builder();
-			builder.scheme(QueryHimsServer.HIMS_SERVER_PROTOCOL)
-					.authority(QueryHimsServer.HIMS_SERVER_HOST)
-					.appendPath("api")
-					.appendPath("evaluation");
 
-			try {
-				JSONObject dict = new JSONObject();
-				request.put("room_num", room);
-				request.put("type", type);
-				request.put("evaluation_form_dict", dict);
-				for (Evaluation evaluation : evaluations) {
-					dict.put(String.valueOf(evaluation.getId()), evaluation.isCheck());
-				}
-				response = QueryHimsServer.makePostRequest(builder.build().toString(), request);
-			} catch (JSONException e) {
-				Log.e(SchedulerServerAPI.class.getSimpleName(), "JSONException: " + e.getMessage());
-			}
-		}
-
-		return response;
-	}
-
-    public static void sendEvaluationAsync(String room, String type, List<Evaluation> evaluations,
-                                                  OnAsyncTaskCompleted callbackTask) {
-        JSONObject request = new JSONObject();
-        
-        if (!TextUtils.isEmpty(room) && !TextUtils.isEmpty(type) && evaluations != null && evaluations.size() > 0) {
-        	Uri.Builder builder = new Uri.Builder();
-            builder.scheme(QueryHimsServer.HIMS_SERVER_PROTOCOL)
-            	.authority(QueryHimsServer.HIMS_SERVER_HOST)
-            	.appendPath("api")
-            	.appendPath("evaluation");
-            
-            try {
-            	JSONObject dict = new JSONObject();
-            	request.put("room_num", room);
-            	request.put("type", type);
-            	request.put("inspection_form_dict", dict);
-	            for (Evaluation evaluation : evaluations) {
-	            	JSONObject eval = new JSONObject();
-	            	eval.put("check", evaluation.isCheck());
-	            	dict.put(String.valueOf(evaluation.getId()), eval);
-	            }
-	            QueryHimsServer.makePostRequest(builder.build().toString(),
-                        request, callbackTask);
-            } catch (JSONException e) {
-            	Log.e(SchedulerServerAPI.class.getSimpleName(), "JSONException: " + e.getMessage());
-            }
-        }
-    }
-    
     public static InputStream postClean(String room, String state) {
     	JSONObject request = new JSONObject();
     	InputStream response = null;

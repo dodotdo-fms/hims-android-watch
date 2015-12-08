@@ -55,18 +55,25 @@ import com.example.mycom.hims.model.History;
 import com.example.mycom.hims.model.User;
 import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
+import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.VMServerAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+import retrofit.http.GET;
 
-public class HistoryActivity extends CommonActivity implements OnAsyncTaskCompleted{
+
+public class HistoryActivity extends CommonActivity {
 
     MyRecyclerView recyclerView;
     HistoryRecyclerViewAdpater adapter;
     MediaPlayer mediaPlayer = null;
     boolean scrollCheck = false;
     boolean loadingMoreContent =false;
+    boolean isPlayVoice = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_history_page);
@@ -212,12 +219,15 @@ public class HistoryActivity extends CommonActivity implements OnAsyncTaskComple
               }catch (Exception e){
                   Log.e("date null","ss");
               }
-              play.setOnClickListener(new View.OnClickListener() {
+              view.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
+                      if(!isPlayVoice) {
                       play.setTag("stop");
+                      isPlayVoice = true;
                       adapter.notifyDataSetChanged();
                       play(getApplicationContext(),String.valueOf(item.getTimestamp().getTime()));
+                      }
                   }
               });
 
@@ -231,8 +241,12 @@ public class HistoryActivity extends CommonActivity implements OnAsyncTaskComple
               view.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                      play.setTag("play");
-                      adapter.notifyDataSetChanged();
+                          isPlayVoice = false;
+                          if(mediaPlayer.isPlaying()){
+                              mediaPlayer.stop();
+                                         }
+                          play.setTag("play");
+                          adapter.notifyDataSetChanged();
                   }
               });
           }
@@ -262,7 +276,8 @@ public class HistoryActivity extends CommonActivity implements OnAsyncTaskComple
     public void init() {
         super.init();
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        VMServerAPI.getNewMsg(null, 1, this);
+        refresh();
+
         HistoryRecyclerViewAdpater adapter = new HistoryRecyclerViewAdpater(getApplicationContext());
         recyclerView.setOnScrollListener(new MyRecyclerView.OnScrollListener() {
             @Override
@@ -285,58 +300,64 @@ public class HistoryActivity extends CommonActivity implements OnAsyncTaskComple
         });
     }
 
-    @Override
-    public void onAsyncTaskCompleted(InputStream inputStream) {
-        if (inputStream == null) {
-            return;
-        }
+    private void refresh(){
+
 
         /* get response */
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Reader reader = new InputStreamReader(inputStream);
-        GetMessageResponse response = gson.fromJson(reader, GetMessageResponse.class);
-
-        if (response == null || response.getVoiceMessage() == null || response.getVoiceMessage().size() <= 0) {
-            return;
-        }
-        List<VoiceMessage> lists = new ArrayList<>();
-        for(VoiceMessage msg : response.getVoiceMessage()) {
-            byte[] decodedBytes = Base64.decode(msg.getMessage(), 0);
-
-
-            File file = new File(RecordManager.filePath + msg.getTimestamp().getTime());
-            if (file.exists() == false) {
-                try {
-                    file.createNewFile();
-                } catch (IOException ioe) {
-                    Log.e(getClass().getSimpleName().toString(), "cannot create file: " +
-                            ioe.getStackTrace());
+        ServerQuery.getMessage(null, 10, new Callback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit) {
+                GetMessageResponse result = (GetMessageResponse)response.body();
+                if (result == null || result.getVoiceMessage() == null || result.getVoiceMessage().size() <= 0) {
+                    return;
                 }
-            }
-            FileOutputStream os = null;
-            try {
-                os = new FileOutputStream(file, false);
-                os.write(decodedBytes);
-                os.close();
-            } catch (FileNotFoundException fnfe) {
-                Log.e(getClass().getSimpleName().toString(), "file not found: " +
-                        fnfe.getStackTrace());
-            } catch (IOException ioe) {
-                Log.e(getClass().getSimpleName().toString(), "IOException: " + ioe.getStackTrace());
-            }
-            msg.setFilepath(file.getPath());
-            lists.add(msg);
-        }
+                List<VoiceMessage> lists = new ArrayList<>();
+                for(VoiceMessage msg : result.getVoiceMessage()) {
+                    byte[] decodedBytes = Base64.decode(msg.getMessage(), 0);
 
-        Messages.getInstance().setLists(lists);
-        Log.e("ss", lists.size()+"");
 
-         adapter = new HistoryRecyclerViewAdpater(getApplicationContext());
-        Log.e("ss", "ss2");
+                    File file = new File(RecordManager.filePath + msg.getTimestamp().getTime());
+                    if (file.exists() == false) {
+                        try {
+                            file.createNewFile();
+                        } catch (IOException ioe) {
+                            Log.e(getClass().getSimpleName().toString(), "cannot create file: " +
+                                    ioe.getStackTrace());
+                        }
+                    }
+                    FileOutputStream os = null;
+                    try {
+                        os = new FileOutputStream(file, false);
+                        os.write(decodedBytes);
+                        os.close();
+                    } catch (FileNotFoundException fnfe) {
+                        Log.e(getClass().getSimpleName().toString(), "file not found: " +
+                                fnfe.getStackTrace());
+                    } catch (IOException ioe) {
+                        Log.e(getClass().getSimpleName().toString(), "IOException: " + ioe.getStackTrace());
+                    }
+                    msg.setFilepath(file.getPath());
+                    lists.add(msg);
+                }
+
+                Messages.getInstance().setLists(lists);
+
+                adapter = new HistoryRecyclerViewAdpater(getApplicationContext());
+
+                recyclerView.setAdapter(adapter);
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+        adapter = new HistoryRecyclerViewAdpater(getApplicationContext());
 
         recyclerView.setAdapter(adapter);
         recyclerView.getAdapter().notifyDataSetChanged();
-        Log.e("ss", recyclerView.getAdapter().getItemCount() + "");
     }
 
     public void showMore() {

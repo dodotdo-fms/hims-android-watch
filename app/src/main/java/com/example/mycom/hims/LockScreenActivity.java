@@ -2,32 +2,13 @@ package com.example.mycom.hims;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.model.api_response.LogoutResponse;
-import com.example.mycom.hims.scheduler.AssignedRoomActivity;
-import com.example.mycom.hims.scheduler.LoginActivity;
-import com.example.mycom.hims.scheduler.RoomActivity;
-import com.example.mycom.hims.scheduler.SearchActivity;
-import com.example.mycom.hims.server_interface.QueryHimsServer;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
-import com.example.mycom.hims.thread.TimerDisplayThread;
-import com.example.mycom.hims.voice_messaging.ChannelListActivity;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 
 public class LockScreenActivity extends Activity {

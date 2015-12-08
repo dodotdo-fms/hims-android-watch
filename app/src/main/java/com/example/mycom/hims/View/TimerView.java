@@ -24,8 +24,7 @@ public class TimerView extends TextView {
     private android.os.Handler mHandler;
 
     private Date mDate;
-    private boolean mTickerStopped = false;
-    private boolean mFinishedLoading = false;
+    private static boolean mTickerStopped = false;
     public TimerView(Context context) {
         super(context);
     }
@@ -50,6 +49,7 @@ public class TimerView extends TextView {
             mTicker = new Runnable() {
                 public void run() {
                     if (mTickerStopped) {
+                        Log.e("re",mTickerStopped+"");
                         listener.onStop();
                         return;
                     }
@@ -57,7 +57,8 @@ public class TimerView extends TextView {
                         listener.onStop();
                         return;
                     }
-
+                    Log.e("re1",mTickerStopped+"");
+                    Log.e("go","go");
                     setText(DateToStringAPI.getString(defaultdate, "mm:ss"));
                     invalidate();
                     defaultdate.setTime(defaultdate.getTime() + 1000);
@@ -94,7 +95,6 @@ public class TimerView extends TextView {
 
     @Override
     protected void onAttachedToWindow() {
-        mTickerStopped = false;
         super.onAttachedToWindow();
 
     }

@@ -59,4 +59,9 @@ public class Rooms {
         return roomHashMap.get(roomNumber);
 
     }
+
+    public void clean(){
+        roomHashMap.clear();
+        lists.clear();
+    }
 }

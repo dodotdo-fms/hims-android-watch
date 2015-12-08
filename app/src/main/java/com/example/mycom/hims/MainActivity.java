@@ -172,6 +172,8 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "Service is launched", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ScreenService.class);
                 startService(intent);
+                Intent intent3 = new Intent(this, RegistrationIntentService.class);
+                startService(intent3);
                 //편하게하기위해서
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

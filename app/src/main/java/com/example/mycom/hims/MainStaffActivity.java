@@ -42,7 +42,6 @@ public class MainStaffActivity extends CommonActivity {
         super.init();
         Calendar calendar = Calendar.getInstance();
         String date = GetDateTimeAPI.getToday(getApplicationContext(), calendar.get(Calendar.DAY_OF_WEEK)) + ", " +GetDateTimeAPI.getToMonth(getApplicationContext(), calendar.get(Calendar.MONTH)) +" " + calendar.get(Calendar.DAY_OF_MONTH);
-
         mTv_date.setText(date);
 
     }

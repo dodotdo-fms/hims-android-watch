@@ -7,6 +7,7 @@ public class MyAccount {
     static MyAccount instance;
     String position;
     String id;
+    String password;
     public static MyAccount getInstance(){
         if(instance == null){
             instance = new MyAccount();
@@ -29,5 +30,13 @@ public class MyAccount {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

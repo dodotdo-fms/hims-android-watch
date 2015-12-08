@@ -48,4 +48,9 @@ public class Messages {
     public VoiceMessage getHistroy(String id){
         return meesageHashmap.get(id);
     }
+
+    public void clean(){
+        meesageHashmap.clear();
+        lists.clear();;
+    }
 }

@@ -2,105 +2,125 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mycom.hims.scheduler.RoomStateActivity"
-    android:background="#000">
+    android:background="#262626">
+    <include layout="@layout/view_loading"
+        android:id="@+id/view_loading"
+        />
 
-
+<RelativeLayout
+    android:id="@+id/view_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
-        android:layout_width="63dp"
-        android:layout_height="63dp"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
         android:id="@+id/room_back"
-        android:onClick="back_click"
         android:src="@drawable/back"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp" />
+      />
 
     <TextView
-        android:layout_width="152dp"
-        android:layout_height="78dp"
+        android:background="#000"
+        android:layout_marginLeft="160dp"
+        android:gravity="center"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
         android:text="1002"
         android:id="@+id/tv_roomNumber"
-        android:textSize = "67sp"
+        android:textSize = "60sp"
         android:textColor="@color/red"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentRight="true"
     />
 
     <TextView
-        android:layout_width="152dp"
-        android:layout_height="39dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/f_1"
+        android:layout_marginTop="101dp"
+
+        />
+</RelativeLayout>
+
+
+    <ScrollView
+        android:layout_below="@+id/view_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="58dp"
+        android:layout_height="33dp"
         android:text="@string/in"
-        android:textSize = "33sp"
+        android:textSize = "30sp"
         android:textColor="@color/checkinoutColor"
-        android:layout_marginTop="93dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
         />
 
     <TextView
-        android:layout_width="152dp"
-        android:layout_height="39dp"
+        android:layout_width="70dp"
+        android:layout_height="33dp"
         android:text="@string/out"
-        android:textSize = "33sp"
+        android:textSize = "30sp"
         android:textColor="@color/checkinoutColor"
-        android:layout_marginTop="132dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="160dp"
         />
 
     <TextView
         android:id="@+id/tv_inTime"
-        android:layout_width="177dp"
-        android:layout_height="39dp"
-        android:text="@string/in"
-        android:textSize = "33sp"
+        android:layout_width="76dp"
+        android:layout_height="30dp"
+        android:text=""
+        android:textSize = "30sp"
         android:textColor="@color/white"
-        android:layout_marginTop="93dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="39dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="61dp"
         />
 
     <TextView
         android:id="@+id/tv_outTime"
-        android:layout_width="177dp"
-        android:layout_height="39dp"
-        android:text="-"
-        android:textSize = "33sp"
+        android:layout_width="76dp"
+        android:layout_height="30dp"
+        android:text=""
+        android:textSize = "30sp"
         android:textColor="@color/white"
-        android:layout_marginTop="132dp"
-        android:layout_marginRight="39dp"
-        android:layout_alignParentRight="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="230dp"
         />
 
     <TextView
-        android:layout_width="187dp"
-        android:layout_height="39dp"
+        android:layout_width="134dp"
+        android:layout_height="30dp"
         android:text="@string/checkedOut"
         android:textSize = "33sp"
         android:textColor="@color/checkedoutColor"
-        android:layout_marginTop="172dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/tv_checkedOut"
+        android:visibility="gone"
         />
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:layout_marginTop="213dp"
->
+
 
 
 
         <RelativeLayout
+            android:layout_marginTop="100dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_requirement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="13dp"
-                android:layout_marginRight="13dp"
-                android:textSize="40sp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:textSize="50sp"
                 android:textColor="@color/white"
                 />
         <RelativeLayout
@@ -112,59 +132,56 @@
 
             <Button
                 android:id="@+id/btn_vc"
-                android:layout_width="match_parent"
-                android:layout_height="93dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:background="@drawable/button_background"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/btn_background"
                 android:text="@string/vc"
                 android:gravity="center"
-
-                android:textSize="53sp"
+                android:textSize="60sp"
                 android:textColor="@color/buttonTextColor"
                 />
 
             <Button
                 android:id="@+id/btn_oc"
-                android:layout_marginTop="100dp"
-                android:layout_width="match_parent"
-                android:layout_height="93dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:background="@drawable/button_background"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="164dp"
+                android:background="@drawable/btn_background"
                 android:text="@string/oc"
-                android:textSize="53sp"
+                android:textSize="60sp"
                 android:textColor="@color/buttonTextColor"
                 />
 
             <Button
                 android:id="@+id/btn_dnd"
-                android:layout_width="match_parent"
-                android:layout_height="93dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:background="@drawable/button_background"
+                android:background="@drawable/btn_background"
                 android:text="@string/dnd"
-                android:textSize="53sp"
+                android:textSize="60sp"
                 android:textColor="@color/buttonTextColor"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="157dp"
+                android:layout_marginBottom="12dp"
                 />
 
             <Button
                 android:id="@+id/btn_rsa"
-                android:layout_width="match_parent"
-                android:layout_height="93dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:background="@drawable/button_background"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="164dp"
+                android:background="@drawable/btn_background"
                 android:text="@string/rsa"
-                android:textSize="53sp"
+                android:textSize="60sp"
                 android:textColor="@color/buttonTextColor"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="157dp"
+                android:layout_marginBottom="12dp"
                 />
         </RelativeLayout>
                     </RelativeLayout>
-
+    </RelativeLayout>
     </ScrollView>
     <!-- -->
     <!--<RelativeLayout-->
