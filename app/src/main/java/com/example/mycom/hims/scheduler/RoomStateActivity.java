@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -55,7 +56,6 @@ public class RoomStateActivity extends CommonActivity {
     ImageView mBtn_back;
     ScrollView mScrollView;
     boolean scrollCheck = false;
-    View mView_header;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_room_state);
@@ -138,7 +138,7 @@ public class RoomStateActivity extends CommonActivity {
 //        }
     }
     public void set_state_color(){
-        Log.e("roo",room.getState()+"a");
+        Log.e("roo", room.getState() + "a");
     	if ("OC".equals(room.getState())) {
             mBtn_oc.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_c));
             mBtn_oc.setTextColor(getResources().getColor(R.color.white));
@@ -185,7 +185,6 @@ public class RoomStateActivity extends CommonActivity {
 
         mScrollView = (ScrollView)findViewById(R.id.scrollView);
 
-        mView_header = (View)findViewById(R.id.view_header);
     }
 
     @Override
@@ -239,29 +238,9 @@ public class RoomStateActivity extends CommonActivity {
             }
         });
 
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                Log.e("y",mScrollView.getY()+":"+mScrollView.getScrollY());
-                if (mScrollView.getScrollY() == 0 && mScrollView.getY() == 0&& scrollCheck == true) {
-                    Log.e("y111","A");
-                    scrollCheck = false;
-                    mView_header.setVisibility(View.VISIBLE);
-                    Animation ani = new TranslateAnimation(0, 0, -100, 0);
-                    ani.setDuration(100);
-                    mView_header.startAnimation(ani);
 
-                } else if (mScrollView.getScrollY() > 0 && mScrollView.getY() > 0&& scrollCheck == false) {
-                    Log.e("y222", "A");
-                    scrollCheck = true;
-                    Animation ani = new TranslateAnimation(0, 0, 0, -100);
-                    ani.setDuration(100);
-                    mView_header.startAnimation(ani);
-                    mView_header.setVisibility(View.GONE);
-              ;
-                }
-            }
-        });
+
+
     }
 
     private void goDialogActivity(String state){

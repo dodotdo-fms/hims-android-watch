@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.LockScreenActivity;
 import com.example.mycom.hims.MainActivity;
+import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.data.Users;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
@@ -70,7 +70,7 @@ public class LoginActivity extends CommonActivity{
         showLoadingDialog();
         ServerQuery.getUsers(new ServerCallback() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit, int statuscode) {
                 GetUsersResponse result = (GetUsersResponse) response.body();
                 if (result != null && result.getUsers() != null && result.getUsers().size() > 0) {
                     Users.getInstance().setUsers(result.getUsers());
@@ -88,7 +88,7 @@ public class LoginActivity extends CommonActivity{
                 }
 
                 listViewInit();
-                hideLoadingDialog();
+//                hideLoadingDialog();
             }
 
             @Override
@@ -105,7 +105,7 @@ public class LoginActivity extends CommonActivity{
     }
 
     private void goLogin(String pw){
-        showLoadingDialog();
+//        showLoadingDialog();
         ServerQuery.goLogin(my_id, pw, new ServerCallback() {
             @Override
             public void onResponse(Response response, Retrofit retrofit,int statuscode) {
@@ -114,11 +114,14 @@ public class LoginActivity extends CommonActivity{
                     MyAccount.getInstance().setPosition(result.getPosition());
                     MyAccount.getInstance().setId(my_id);
                     ServiceGenerator.setToken(result.getToken());
-                    Intent lockScreenIntent = new Intent(LoginActivity.this, LockScreenActivity.class);
-                    lockScreenIntent.putExtra("position", result.getPosition());
-                    MyAccount.getInstance().setPosition(result.getPosition());
-                    MySharedPreferencesManager.getInstance().setMyPosition(result.getPosition());
-                    startActivity(lockScreenIntent);
+                    if(!result.getPosition().equals("manager")){
+                        Intent lockScreenIntent = new Intent(LoginActivity.this, MainStaffActivity.class);
+                        lockScreenIntent.putExtra("position", result.getPosition());
+                        MyAccount.getInstance().setPosition(result.getPosition());
+                        MySharedPreferencesManager.getInstance().setMyPosition(result.getPosition());
+                        startActivity(lockScreenIntent);
+                    }
+
                     return;
                 }
                 hideLoadingDialog();

@@ -4,7 +4,9 @@
     tools:context="com.example.mycom.hims.voice_messaging.MessageSendActivity"
     android:background="#000">
 
-
+    <include layout="@layout/view_loading"
+        android:id="@+id/view_loading"
+        />
 
 
 
@@ -20,25 +22,19 @@
                 android:layout_centerHorizontal="true" />
 
 
-    <FrameLayout
-        android:id="@+id/list"
-        android:onClick="onClick"
-        android:layout_width="160dp"
-        android:layout_height="93dp"
-        android:background="@color/checkinoutColor"
-        >
+
         <ImageView
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/list"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
             android:onClick="onClick"
-            android:src="@drawable/back_white"
+            android:src="@drawable/back"
             android:layout_gravity="center"/>
-    </FrameLayout>
 
 
     <FrameLayout
         android:layout_width="160dp"
-        android:layout_height="93dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="160dp"
         >
         <com.example.mycom.hims.View.TimerView

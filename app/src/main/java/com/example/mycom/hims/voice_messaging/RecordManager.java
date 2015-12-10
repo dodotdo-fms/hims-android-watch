@@ -3,6 +3,7 @@
 package com.example.mycom.hims.voice_messaging;
 
 import android.media.MediaRecorder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -26,6 +27,8 @@ public class RecordManager
 
     public void start(String fileName)
     {
+
+        Log.e("file",fileName);
         isRecorded = true;
         if (recorder == null) recorder = new MediaRecorder();
         recorder.reset();
@@ -39,6 +42,7 @@ public class RecordManager
         }
         catch (Exception e)
         {
+            Log.e("prepare","aa");
             e.printStackTrace();
             isRecorded = false;
         }
@@ -53,7 +57,7 @@ public class RecordManager
         {
             recorder.stop();
         }
-        catch(Exception e){}
+        catch(Exception e){Log.e("prepare","aa2");}
         finally
         {
             recorder.release();

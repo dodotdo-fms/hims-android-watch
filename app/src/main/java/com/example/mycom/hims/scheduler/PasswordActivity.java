@@ -8,23 +8,27 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.LockScreenActivity;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
+import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.model.api_request.RequestLogin;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.server_interface.QueryHimsServer;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
 import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.ServiceGenerator;
@@ -41,27 +45,53 @@ public class PasswordActivity extends CommonActivity {
     private TextView pass_num;
     String pass_number="";
     String manager_name;
-    private RelativeLayout lay;
-
+//    private RelativeLayout lay;
+    boolean isBack = true;
     int pass_length = 0;
 
     String password;
 
-
+    ImageView mBtn_cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_password);
         isUseLoadingDialog = true;
         super.onCreate(savedInstanceState);
-
+        mBtn_cancel = (ImageView)findViewById(R.id.btn_cancel);
 
         Intent intent = getIntent();
         password = intent.getExtras().getString("pass");
         manager_name = intent.getExtras().getString("name");
-        lay = (RelativeLayout)findViewById(R.id.lay);
+//        lay = (RelativeLayout)findViewById(R.id.lay);
         pass_num = (TextView)findViewById(R.id.search_num);
-        lay.setVisibility(View.GONE);
+        pass_num.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0){
+                    isBack = true;
+                    mBtn_cancel.setImageDrawable(getResources().getDrawable(R.drawable.back_white));
+                    RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()),(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()));
+                    mBtn_cancel.setLayoutParams(param);
+                }else if(s.length() == 1){
+                    isBack = false;
+                    mBtn_cancel.setImageDrawable(getResources().getDrawable(R.drawable.cancel));
+                    RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()), (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 33, getResources().getDisplayMetrics()));
+                    mBtn_cancel.setLayoutParams(param);
+                }
+            }
+        });
+//        lay.setVisibility(View.GONE);
     }
 
     public void check_condition(String str){
@@ -74,14 +104,9 @@ public class PasswordActivity extends CommonActivity {
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.ok_btn:
-                lay.setVisibility(View.GONE);
-                break;
-            case R.id.search_back:
-                Intent intent = new Intent(PasswordActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+//            case R.id.ok_btn:
+////                lay.setVisibility(View.GONE);
+//                break;
             case R.id.btn1:
                 check_condition("1");
                 break;
@@ -113,18 +138,31 @@ public class PasswordActivity extends CommonActivity {
                 check_condition("0");
                 break;
             case R.id.btn_cancel:
-                if(pass_length>0){
-                    pass_number = pass_number.substring(0, pass_number.length()-1);
-                    pass_length--;
-                    pass_num.setText(pass_number);
-                }else{}
+                goCancel();
                 break;
             case R.id.btn_search:
                 goLogin();
                 break;
+            case R.id.view_search:
+                goLogin();
+                break;
+            case R.id.view_cancel :
+                goCancel();
+                break;
             default:
                 Log.d("1", "default");
                 break;
+        }
+    }
+
+    private void goCancel(){
+        if(!isBack){
+            pass_number = pass_number.substring(0, pass_number.length()-1);
+            pass_length--;
+            pass_num.setText(pass_number);
+        }else{
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
         }
     }
 
@@ -148,11 +186,11 @@ public class PasswordActivity extends CommonActivity {
                     MyAccount.getInstance().setPosition(result.getPosition());
                     MyAccount.getInstance().setId(getIntent().getExtras().getString("id"));
                     MyAccount.getInstance().setPosition(result.getPosition());
-                    Intent intent = new Intent(PasswordActivity.this, LockScreenActivity.class);
+                    Intent intent = new Intent(PasswordActivity.this, MainStaffActivity.class);
                     intent.putExtra("position", result.getPosition());
                     startActivity(intent);
                 } else {
-                    lay.setVisibility(View.VISIBLE);
+//                    lay.setVisibility(View.VISIBLE);
                 }
                 hideLoadingDialog();
             }

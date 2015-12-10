@@ -31,26 +31,17 @@ import com.example.mycom.hims.scheduler.LoginActivity;
 
 public class MainActivity extends Activity {
 
-    private ImageView onBtn, offBtn;
-    private PendingIntent restartIntent;
-    private UncaughtExceptionHandler uncaughtHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        onBtn= (ImageView)findViewById(R.id.on_btn);
-        offBtn= (ImageView)findViewById(R.id.off_btn);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
         
-//        uncaughtHandler = Thread.getDefaultUncaughtExceptionHandler();
-//        Thread.setDefaultUncaughtExceptionHandler(new AppRestarter());
+
         
-        restartIntent = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getIntent()), getIntent().getFlags());
-        
+
 //        // REST API Test
 //    	LoginResponse loginResponse = SchedulerServerAPI.login("admin", "1");
 //    	String token = loginResponse.getToken();
@@ -88,7 +79,11 @@ public class MainActivity extends Activity {
         {
             showLicenseAlert();
         }
+
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -96,6 +91,14 @@ public class MainActivity extends Activity {
         if (isNetworkEnabled() == false) {
             showNoNetworkAlert();
         }
+        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
     }
 
     private void showNoNetworkAlert() {
@@ -166,42 +169,17 @@ public class MainActivity extends Activity {
         return wManager.isWifiEnabled() && getIpAddress(wManager) != null;
     }
 
-    public void onClick(View v){
-        switch(v.getId()){
-            case R.id.on_btn:
-                Toast.makeText(MainActivity.this, "Service is launched", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, ScreenService.class);
-                startService(intent);
-                Intent intent3 = new Intent(this, RegistrationIntentService.class);
-                startService(intent3);
-                //편하게하기위해서
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(i);
+//                Toast.makeText(MainActivity.this, "Service is launched", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ScreenService.class);
+//                startService(intent);
 
-                break;
-            case R.id.off_btn:
-                Toast.makeText(MainActivity.this, "Service is terminated", Toast.LENGTH_SHORT).show();
-                Intent intent2 = new Intent(this, ScreenService.class);
-                stopService(intent2);
-                break;
-        }
-    }
 
 	@Override
 	public void onBackPressed() {
 		// Don't do anything on back button pressed
-		Log.d("MainActivity", "Back button pressed!");
 		return;
 	}
 	
-	private class AppRestarter implements Thread.UncaughtExceptionHandler {
-		@Override
-		public void uncaughtException(Thread thread, Throwable ex) {
-			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-			alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, restartIntent);
-			System.exit(2);
-		}
-	}
+
 	
 }

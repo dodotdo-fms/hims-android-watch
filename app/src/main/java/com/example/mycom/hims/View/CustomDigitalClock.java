@@ -50,14 +50,22 @@ public class CustomDigitalClock extends TextView {
                     return;
                 mCalendar.setTimeInMillis(System.currentTimeMillis());
                 // setText(mSimpleDateFormat.format(mCalendar.getTime()));
-                String time = mCalendar.get(Calendar.HOUR_OF_DAY)+":";
+                String time = mCalendar.get(Calendar.HOUR_OF_DAY)+"";
+                String ampm;
+                if(Integer.valueOf(time)>=12){
+                    time = (Integer.valueOf(time)-12)+":";
+                    ampm = "pm";
+                }else{
+                    time+=":";
+                    ampm = "am";
+                }
                 int minute = mCalendar.get(Calendar.MINUTE);
                 if(minute<10){
                     time += "0"+minute;
                 }else{
                     time += minute;
                 }
-
+                time += ampm;
                 setText(time);
                 invalidate();
                 long now = SystemClock.uptimeMillis();

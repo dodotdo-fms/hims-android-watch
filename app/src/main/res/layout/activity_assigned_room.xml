@@ -18,13 +18,12 @@
     <!--<RelativeLayout--> -->
 
     <ImageView
-        android:layout_width="63dp"
-        android:layout_height="63dp"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
         android:id="@+id/room_back"
         android:onClick="back_click"
-        android:src="@drawable/back"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp" />
+        android:background="@drawable/back"
+/>
     
     <TextView
         android:layout_alignParentRight="true"

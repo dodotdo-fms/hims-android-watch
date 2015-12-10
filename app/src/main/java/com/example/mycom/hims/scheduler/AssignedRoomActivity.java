@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
 import com.example.mycom.hims.DialogActivity.RoomAlreadyCleanDialogAcitivity;
-import com.example.mycom.hims.LockScreenActivity;
+import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.View.FooterViewHolder;
@@ -65,7 +65,7 @@ public class AssignedRoomActivity extends CommonActivity {
     public void back_click(View v){
         switch(v.getId()){
             case R.id.room_back:
-                Intent lockScreenIntent = new Intent(AssignedRoomActivity.this, LockScreenActivity.class);
+                Intent lockScreenIntent = new Intent(AssignedRoomActivity.this, MainStaffActivity.class);
                 lockScreenIntent.putExtra("position", MyAccount.getInstance().getPosition());
                 startActivity(lockScreenIntent);
             	finish();
@@ -76,7 +76,7 @@ public class AssignedRoomActivity extends CommonActivity {
 
 	@Override
 	public void onBackPressed() {
-		Intent lockScreenIntent = new Intent(AssignedRoomActivity.this, LockScreenActivity.class);
+		Intent lockScreenIntent = new Intent(AssignedRoomActivity.this, MainStaffActivity.class);
         lockScreenIntent.putExtra("position",  MyAccount.getInstance().getPosition());
         startActivity(lockScreenIntent);
     	finish();
@@ -239,7 +239,7 @@ public class AssignedRoomActivity extends CommonActivity {
 
                     int count = 0;
                     for (Room room : result.getRooms()) {
-                        if (room.getState().equals("VD") || room.getState().equals("OD")) {
+                        if (room.getState().equals("VD") || room.getState().equals("OD") || room.getState().equals("DND") || room.getState().equals("RSA")) {
                             count++;
                         }
                     }

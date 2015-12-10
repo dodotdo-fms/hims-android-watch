@@ -21,16 +21,17 @@ import com.example.mycom.hims.Common.Utill.MyBatteryManager;
 import com.example.mycom.hims.DialogActivity.LogoutDialogAcitivity;
 import com.example.mycom.hims.View.CustomDigitalClock;
 import com.example.mycom.hims.scheduler.AssignedRoomActivity;
+import com.example.mycom.hims.scheduler.SetUpActivity;
 import com.example.mycom.hims.voice_messaging.ChannelListActivity;
 
 import java.util.Calendar;
 
 public class MainStaffActivity extends CommonActivity {
-    TextView mTv_energy,mTv_date,mTv_logout;
+    TextView mTv_energy,mTv_date;
     CustomDigitalClock mTv_time;
     Button mBtn_radio,mBtn_room;
     ImageView mIv_logout;
-    View mRel_logout,mRel_logoutDialog;
+    View mRel_logoutDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main_staff);
@@ -40,9 +41,9 @@ public class MainStaffActivity extends CommonActivity {
     @Override
     public void init() {
         super.init();
-        Calendar calendar = Calendar.getInstance();
-        String date = GetDateTimeAPI.getToday(getApplicationContext(), calendar.get(Calendar.DAY_OF_WEEK)) + ", " +GetDateTimeAPI.getToMonth(getApplicationContext(), calendar.get(Calendar.MONTH)) +" " + calendar.get(Calendar.DAY_OF_MONTH);
-        mTv_date.setText(date);
+//        Calendar calendar = Calendar.getInstance();
+//        String date = GetDateTimeAPI.getToday(getApplicationContext(), calendar.get(Calendar.DAY_OF_WEEK)) + ", " +GetDateTimeAPI.getToMonth(getApplicationContext(), calendar.get(Calendar.MONTH)) +" " + calendar.get(Calendar.DAY_OF_MONTH);
+//        mTv_date.setText(date);
 
     }
 
@@ -50,14 +51,11 @@ public class MainStaffActivity extends CommonActivity {
     public void onMappingXml() {
         super.onMappingXml();
         mTv_energy = (TextView)findViewById(R.id.tv_energy);
-        mTv_date = (TextView)findViewById(R.id.tv_date);
+//        mTv_date = (TextView)findViewById(R.id.tv_date);
         mTv_time = (CustomDigitalClock)findViewById(R.id.tv_time);
-        mTv_logout = (TextView)findViewById(R.id.tv_logout);
-
         mBtn_radio = (Button)findViewById(R.id.btn_radio);
         mBtn_room = (Button)findViewById(R.id.btn_room);
 
-        mRel_logout = findViewById(R.id.rel_logout);
 
         mIv_logout = (ImageView)findViewById(R.id.iv_logout);
     }
@@ -66,27 +64,13 @@ public class MainStaffActivity extends CommonActivity {
     @Override
     public void setListener() {
         super.setListener();
-        mRel_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                startActivity(new Intent(getApplicationContext(), LogoutDialogAcitivity.class));
-            }
-        });
 
         mIv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                startActivity(new Intent(getApplicationContext(), LogoutDialogAcitivity.class));
-            }
-        });
-
-        mTv_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                startActivity(new Intent(getApplicationContext(), LogoutDialogAcitivity.class));
+//                startActivity(new Intent(getApplicationContext(), LogoutDialogAcitivity.class));
+                startActivity(new Intent(getApplicationContext(), SetUpActivity.class));
             }
         });
 

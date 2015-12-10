@@ -2,6 +2,7 @@ package com.example.mycom.hims.server_interface;
 
 import com.example.mycom.hims.model.api_request.RequestLogin;
 import com.example.mycom.hims.model.api_request.RequestPostClean;
+import com.example.mycom.hims.model.api_response.CommonResultReponse;
 import com.example.mycom.hims.model.api_response.GetChannelResponse;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
@@ -9,12 +10,15 @@ import com.example.mycom.hims.model.api_response.GetUsersResponse;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.model.api_response.LogoutResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
+import com.squareup.okhttp.RequestBody;
 
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Url;
 
@@ -42,5 +46,16 @@ public interface ServerAPI {
 
     @GET
     Call<GetMessageResponse> getMessage(@Url String path);
+
+    @GET("/api/walkie/channel/{channelId}/enter")
+    Call<CommonResultReponse> postChannelEnter(@Path("channelId") String channelId);
+
+    @GET("/api/walkie/channel/{channelId}/exit")
+    Call<CommonResultReponse> postChannelExit(@Path("channelId") String channelId);
+
+    @Multipart
+    @POST("/api/walkie/channel/{channelId}/msg")
+    Call<CommonResultReponse> postMsg(@Path("channelId") String channelId,
+                                      @Part("file") RequestBody body);
 
 }

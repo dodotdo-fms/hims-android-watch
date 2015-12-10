@@ -73,4 +73,5 @@
     <string name="reply">Reply</string>
     <string name="title_activity_are_you_sure_dialog">AreYouSureDialogActivity</string>
     <string name="areYouSure">Are you sure?</string>
+    <string name="title_activity_set_up">SetUpActivity</string>
 </resources>

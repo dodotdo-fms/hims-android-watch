@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.example.mycom.hims.model.api_request.RequestLogin;
 import com.example.mycom.hims.model.api_request.RequestPostClean;
+import com.example.mycom.hims.model.api_response.CommonResultReponse;
 import com.example.mycom.hims.model.api_response.GetChannelResponse;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
@@ -12,7 +13,10 @@ import com.example.mycom.hims.model.api_response.GetUsersResponse;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.model.api_response.LogoutResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.RequestBody;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.security.auth.callback.Callback;
@@ -91,10 +95,27 @@ public class ServerQuery {
     }
 
 
-    private static void appendQueryParameter(Uri.Builder builder, String key, String value) {
+    public static void appendQueryParameter(Uri.Builder builder, String key, String value) {
         if (builder != null && !TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
             builder.appendQueryParameter(key, value);
         }
+    }
+
+    public static void postChannelEnter(String channelId, retrofit.Callback callback){
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postChannelEnter(channelId);
+        call.enqueue(callback);
+    }
+
+    public static void postChannelExit(String channelId, retrofit.Callback callback){
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postChannelExit(channelId);
+        call.enqueue(callback);
+    }
+
+    public static void postMsg(String channelId,File file, retrofit.Callback callback){
+        RequestBody requestBody =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postMsg(channelId,requestBody);
+        call.enqueue(callback);
     }
 
 }

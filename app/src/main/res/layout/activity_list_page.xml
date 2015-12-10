@@ -16,35 +16,28 @@
         />
 
 
-    <FrameLayout
-        android:id="@+id/back"
-        android:onClick="onClick"
-        android:layout_width="160dp"
-        android:layout_height="93dp"
-        android:background="@color/checkinoutColor"
         >
         <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/back"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
             android:onClick="onClick"
-            android:src="@drawable/back_white"
+            android:src="@drawable/back"
             android:layout_gravity="center"/>
-    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/historyButton"
         android:onClick="onClick"
         android:layout_width="160dp"
-        android:layout_height="93dp"
+        android:layout_height="100dp"
         android:background="@color/yesButtonBackgroundColor"
         android:layout_alignParentRight="true"
         >
         <TextView
             android:layout_width="130dp"
-            android:layout_height="47dp"
+            android:layout_height="54dp"
             android:text="History"
-            android:textSize="37sp"
+            android:textSize="40sp"
             android:textColor="@color/white"
 
             android:layout_gravity="center"/>

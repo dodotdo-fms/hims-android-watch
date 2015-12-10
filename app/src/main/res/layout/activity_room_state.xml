@@ -7,41 +7,11 @@
         android:id="@+id/view_loading"
         />
 
-<RelativeLayout
-    android:id="@+id/view_header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="100dp"
-        android:id="@+id/room_back"
-        android:src="@drawable/back"
-      />
 
-    <TextView
-        android:background="#000"
-        android:layout_marginLeft="160dp"
-        android:gravity="center"
-        android:layout_width="160dp"
-        android:layout_height="100dp"
-        android:text="1002"
-        android:id="@+id/tv_roomNumber"
-        android:textSize = "60sp"
-        android:textColor="@color/red"
-    />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/f_1"
-        android:layout_marginTop="101dp"
-
-        />
-</RelativeLayout>
 
 
     <ScrollView
-        android:layout_below="@+id/view_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
@@ -50,13 +20,39 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:id="@+id/room_back"
+            android:src="@drawable/back"
+            />
+
+        <TextView
+            android:background="#000"
+            android:layout_marginLeft="160dp"
+            android:gravity="center"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:text="1002"
+            android:id="@+id/tv_roomNumber"
+            android:textSize = "60sp"
+            android:textColor="@color/red"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/f_1"
+            android:layout_marginTop="101dp"
+
+            />
     <TextView
         android:layout_width="58dp"
         android:layout_height="33dp"
         android:text="@string/in"
         android:textSize = "30sp"
         android:textColor="@color/checkinoutColor"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="112dp"
         android:layout_marginLeft="12dp"
         />
 
@@ -66,7 +62,7 @@
         android:text="@string/out"
         android:textSize = "30sp"
         android:textColor="@color/checkinoutColor"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="112dp"
         android:layout_marginLeft="160dp"
         />
 
@@ -77,7 +73,7 @@
         android:text=""
         android:textSize = "30sp"
         android:textColor="@color/white"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="112dp"
         android:layout_marginLeft="61dp"
         />
 
@@ -88,7 +84,7 @@
         android:text=""
         android:textSize = "30sp"
         android:textColor="@color/white"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="112dp"
         android:layout_marginLeft="230dp"
         />
 
@@ -98,7 +94,7 @@
         android:text="@string/checkedOut"
         android:textSize = "33sp"
         android:textColor="@color/checkedoutColor"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="152dp"
         android:layout_marginLeft="12dp"
         android:id="@+id/tv_checkedOut"
         android:visibility="gone"
@@ -110,7 +106,7 @@
 
 
         <RelativeLayout
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="200dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView

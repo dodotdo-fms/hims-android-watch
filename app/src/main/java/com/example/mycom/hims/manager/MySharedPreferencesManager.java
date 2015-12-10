@@ -12,6 +12,7 @@ public class MySharedPreferencesManager {
 
     protected final static String PREFERENCE_ACCOUNT = "PrefName";
     protected final static String PREFERENCE_UPDATE = "Update";
+    protected final static String PREFERENCE_UTILL = "Utill";
 
 
     static MySharedPreferencesManager instance;
@@ -46,6 +47,20 @@ public class MySharedPreferencesManager {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("position", position);
         editor.commit();
+    }
+
+    public void setisScreenLock(boolean isScreenLock){
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_UTILL,context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isScreenLock", isScreenLock);
+        editor.commit();
+
+    }
+    public boolean getIsScreenLock(){
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_UTILL,context.MODE_PRIVATE);
+
+        return preferences.getBoolean("isScreenLock", true);
+
     }
 
 

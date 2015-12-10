@@ -34,7 +34,7 @@ import com.example.mycom.hims.Common.App;
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
 import com.example.mycom.hims.DialogActivity.RoomAlreadyCleanDialogAcitivity;
-import com.example.mycom.hims.LockScreenActivity;
+import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.View.FooterViewHolder;
@@ -108,15 +108,9 @@ public class ChannelListActivity extends CommonActivity {
         Intent lockScreenIntent;
         switch(v.getId()){
             case R.id.back:
-                lockScreenIntent = new Intent(ChannelListActivity.this, LockScreenActivity.class);
+                lockScreenIntent = new Intent(ChannelListActivity.this, MainStaffActivity.class);
                 lockScreenIntent.putExtra("position", position);
             	startActivity(lockScreenIntent);
-                finish();
-                break;
-            case R.id.btn_back:
-                lockScreenIntent = new Intent(ChannelListActivity.this, LockScreenActivity.class);
-                lockScreenIntent.putExtra("position", position);
-                startActivity(lockScreenIntent);
                 finish();
                 break;
 //            case R.id.plus:
@@ -134,7 +128,7 @@ public class ChannelListActivity extends CommonActivity {
 
     @Override
 	public void onBackPressed() {
-    	Intent lockScreenIntent = new Intent(ChannelListActivity.this, LockScreenActivity.class);
+    	Intent lockScreenIntent = new Intent(ChannelListActivity.this, MainStaffActivity.class);
         lockScreenIntent.putExtra("position", position);
     	startActivity(lockScreenIntent);
         finish();

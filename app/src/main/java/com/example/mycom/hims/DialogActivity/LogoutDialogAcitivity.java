@@ -10,7 +10,6 @@ import android.widget.Button;
 import com.example.mycom.hims.Common.App;
 import com.example.mycom.hims.Common.CommonActivity;
 import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.LockScreenActivity;
 import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.model.api_response.LogoutResponse;
