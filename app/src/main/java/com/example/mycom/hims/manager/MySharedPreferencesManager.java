@@ -58,9 +58,19 @@ public class MySharedPreferencesManager {
     }
     public boolean getIsScreenLock(){
         SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_UTILL,context.MODE_PRIVATE);
-
         return preferences.getBoolean("isScreenLock", true);
+    }
 
+    public void setDeviceId(String deviceId){
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_ACCOUNT,context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("deviceId", deviceId);
+        editor.commit();
+
+    }
+    public String getDeviceId(){
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_ACCOUNT,context.MODE_PRIVATE);
+        return preferences.getString("deviceId", null);
     }
 
 

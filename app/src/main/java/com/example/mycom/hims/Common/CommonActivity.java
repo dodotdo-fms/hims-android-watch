@@ -9,7 +9,7 @@ import com.example.mycom.hims.R;
 /**
  * Created by Omjoon on 2015. 11. 26..
  */
-public abstract class CommonActivity extends Activity implements defaultSetting {
+public abstract class CommonActivity extends Activity implements DefaultSetting {
     public boolean isUseLoadingDialog = false;
     View mView_loading;
     @Override

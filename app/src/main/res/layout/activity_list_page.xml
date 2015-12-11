@@ -34,7 +34,7 @@
         android:layout_alignParentRight="true"
         >
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="54dp"
             android:text="History"
             android:textSize="40sp"

@@ -68,7 +68,6 @@ public class MainStaffActivity extends CommonActivity {
         mIv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
 //                startActivity(new Intent(getApplicationContext(), LogoutDialogAcitivity.class));
                 startActivity(new Intent(getApplicationContext(), SetUpActivity.class));
             }
@@ -95,6 +94,6 @@ public class MainStaffActivity extends CommonActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mTv_energy.setText(MyBatteryManager.getBatteryPercentage(getApplicationContext()) + "");
+        mTv_energy.setText(MyBatteryManager.getBatteryPercentage(getApplicationContext()) + "%");
     }
 }

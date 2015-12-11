@@ -35,6 +35,7 @@ public class LogoutDialogAcitivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_logout_dialog_acitivity);
+        isUseLoadingDialog =true;
         super.onCreate(savedInstanceState);
     }
 
@@ -64,6 +65,7 @@ public class LogoutDialogAcitivity extends CommonActivity {
         mBtn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showLoadingDialog();
 	                ServerQuery.goLogout(new Callback() {
                         @Override
                         public void onResponse(Response response, Retrofit retrofit) {
@@ -79,15 +81,15 @@ public class LogoutDialogAcitivity extends CommonActivity {
                                 MyAccount.getInstance().setPosition(null);
                                 ServiceGenerator.setToken(null);
                                 App.cleanMemory();
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
+                                setResult(1);
                                 finish();
                             }
+                            hideLoadingDialog();
                         }
 
                         @Override
                         public void onFailure(Throwable t) {
-
+                            hideLoadingDialog();
                         }
                     });
 

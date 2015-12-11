@@ -22,7 +22,6 @@ import com.example.mycom.hims.R;
 import com.example.mycom.hims.View.TimerView;
 import com.example.mycom.hims.data.Channels;
 import com.example.mycom.hims.model.Channel;
-import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.VMServerAPI;
 import com.example.mycom.hims.thread.TimerDisplayThread;

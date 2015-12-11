@@ -80,6 +80,18 @@ public class MainActivity extends Activity {
             showLicenseAlert();
         }
 
+        if (deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-dd24-7867-ffff-ffffcc7cf5d3".substring(0, 17)) != 0) {
+
+        }
+
+//        String s1 = deviceId.substring(0, 17);
+//        String s2 = "ffffffff-dd24-7867-ffff-ffffcc7cf5d3".substring(0, 17);
+//        s1.equalsIgnoreCase(s2);
+//
+//        "ffffffff-dd24-7867-ffff-ffffcc7cf5d3".startsWith(s1)
+
+
+
 
     }
 

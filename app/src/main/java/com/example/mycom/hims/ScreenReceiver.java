@@ -8,6 +8,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.example.mycom.hims.Common.App;
 import com.example.mycom.hims.scheduler.LoginActivity;
 
 public class ScreenReceiver extends BroadcastReceiver {
@@ -31,9 +32,18 @@ public class ScreenReceiver extends BroadcastReceiver {
             }
             if(isPhoneIdle){
                 disableKeyguard();
-                Intent i = new Intent(context, LoginActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                Intent i;
+                try {
+                    if (App.isAliveMemory) {
+                        i = new Intent(context, MainStaffActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }catch (Exception e){
+                    Intent Loginintent = new Intent(context,LoginActivity.class) ;
+                    Loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(Loginintent);
+                }
             }
         }
     }

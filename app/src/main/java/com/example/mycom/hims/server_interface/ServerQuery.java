@@ -2,9 +2,12 @@ package com.example.mycom.hims.server_interface;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.example.mycom.hims.manager.MySharedPreferencesManager;
 import com.example.mycom.hims.model.api_request.RequestLogin;
 import com.example.mycom.hims.model.api_request.RequestPostClean;
+import com.example.mycom.hims.model.api_request.RequestRegisterDeviceId;
 import com.example.mycom.hims.model.api_response.CommonResultReponse;
 import com.example.mycom.hims.model.api_response.GetChannelResponse;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
@@ -114,8 +117,45 @@ public class ServerQuery {
     public static void postMsg(String channelId,File file, retrofit.Callback callback){
         RequestBody requestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postMsg(channelId,requestBody);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postMsg(channelId, requestBody);
         call.enqueue(callback);
+    }
+
+    public static void postRegisterDeviceId(final String deviceId){
+        RequestRegisterDeviceId request = new RequestRegisterDeviceId("android",deviceId);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postRegisterDeviceId(request);
+        call.enqueue(new retrofit.Callback() {
+
+            @Override
+            public void onResponse(Response response, Retrofit retrofit) {
+                MySharedPreferencesManager.getInstance().setDeviceId(deviceId);
+                Log.e("pushRegister", "Success Register DeviceID");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("pushRegister","Fail Register DeviceID");
+            }
+        });
+    }
+
+    public static void deleteRegisterDeviceId(){
+        String deviceId = MySharedPreferencesManager.getInstance().getDeviceId();
+        if(deviceId != null) {
+            Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).deleteRegisterDeviceId(MySharedPreferencesManager.getInstance().getDeviceId());
+            call.enqueue(new retrofit.Callback() {
+                @Override
+                public void onResponse(Response response, Retrofit retrofit) {
+                    MySharedPreferencesManager.getInstance().setDeviceId(null);
+                    Log.e("pushRegister", "Success unRegister DeviceID");
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.e("pushRegister", "Fail unRegister DeviceID");
+                }
+            });
+        }
     }
 
 }

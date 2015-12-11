@@ -44,6 +44,11 @@ public class ScreenService extends Service {
                     registerReceiver(mReceiver, filter);
                 }
             }
+            else{
+                if(mReceiver != null) {
+                    unregisterReceiver(mReceiver);
+                }
+            }
         }
         return START_REDELIVER_INTENT;
     }

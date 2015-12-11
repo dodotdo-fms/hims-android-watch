@@ -29,7 +29,6 @@ import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.server_interface.QueryHimsServer;
-import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.ServiceGenerator;
 import com.example.mycom.hims.thread.TimerDisplayThread;
@@ -169,9 +168,9 @@ public class PasswordActivity extends CommonActivity {
     private void goLogin(){
         String id = getIntent().getExtras().getString("id");
         showLoadingDialog();
-        ServerQuery.goLogin(id, pass_number, new ServerCallback() {
+        ServerQuery.goLogin(id, pass_number, new Callback() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit) {
                 LoginResponse result = (LoginResponse)response.body();
                 if (!TextUtils.isEmpty(result.getToken())) {
                     QueryHimsServer.setToken(result.getToken());
@@ -189,6 +188,7 @@ public class PasswordActivity extends CommonActivity {
                     Intent intent = new Intent(PasswordActivity.this, MainStaffActivity.class);
                     intent.putExtra("position", result.getPosition());
                     startActivity(intent);
+                    finish();
                 } else {
 //                    lay.setVisibility(View.VISIBLE);
                 }
@@ -200,14 +200,7 @@ public class PasswordActivity extends CommonActivity {
                 hideLoadingDialog();
             }
 
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                if(statuscode == 400){
-                    Toast.makeText(getApplicationContext(),"id or password not incorrect",Toast.LENGTH_SHORT).show();
-                }
-                hideLoadingDialog();
-            }
+
         });
 
     }

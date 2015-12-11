@@ -33,8 +33,6 @@ import com.example.mycom.hims.data.Messages;
 import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
-import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -231,9 +229,9 @@ public class AssignedRoomActivity extends CommonActivity {
 
     private void refresh(){
         showLoadingDialog();
-        ServerQuery.getRooms(null, cleanerId, null, null, null, new ServerCallback() {
+        ServerQuery.getRooms(null, cleanerId, null, null, null, new Callback() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit) {
                 GetRoomsResponse result = (GetRoomsResponse) response.body();
                 if (result != null && result.getRooms() != null && result.getRooms().size() > 0) {
 
@@ -258,11 +256,7 @@ public class AssignedRoomActivity extends CommonActivity {
 hideLoadingDialog();
             }
 
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                hideLoadingDialog();
-            }
+
         });
         adapter = new RoomRecyclerViewAdpater(getApplicationContext());
         recyclerView.setAdapter(adapter);

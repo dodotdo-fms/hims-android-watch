@@ -4,48 +4,58 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mycom.hims.Common.App;
 import com.example.mycom.hims.Common.CommonActivity;
+import com.example.mycom.hims.Common.DefaultSetting;
 import com.example.mycom.hims.Common.MyAccount;
+import com.example.mycom.hims.DialogActivity.RoomAlreadyCleanDialogAcitivity;
 import com.example.mycom.hims.MainActivity;
 import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
+import com.example.mycom.hims.View.FooterViewHolder;
+import com.example.mycom.hims.View.MyRecyclerView;
+import com.example.mycom.hims.View.ViewHolderFactory;
+import com.example.mycom.hims.data.Messages;
+import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.data.Users;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
+import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.User;
+import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.model.api_response.GetUsersResponse;
 import com.example.mycom.hims.model.api_response.LoginResponse;
-import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.ServiceGenerator;
-import com.google.gson.Gson;
 
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class LoginActivity extends CommonActivity{
-    private TextView room_time;
+public class LoginActivity extends CommonActivity implements DefaultSetting{
     private Typeface font;
-    private ListView mListView = null;
-    private ListViewAdapter mAdapter = null;
-
+    private MyRecyclerView recyclerView;
+    private UserRecyclerViewAdpater adapter;
     public static String my_id;
     String p_userID;
     String p_UserPass;
-
-    private static Gson gson = new Gson();
-
+    boolean scrollCheck = false;
+    boolean loadingMoreContent =false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         isUseLoadingDialog = true;
@@ -56,9 +66,8 @@ public class LoginActivity extends CommonActivity{
         p_UserPass = prefs.getString("p_UserPass", "");
 
         font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
-        room_time = (TextView)findViewById(R.id.room_time);
 
-        getUsers();
+
 
 
 
@@ -66,63 +75,28 @@ public class LoginActivity extends CommonActivity{
     }
 
 
-    private void getUsers(){
-        showLoadingDialog();
-        ServerQuery.getUsers(new ServerCallback() {
-            @Override
-            public void onResponse(Response response, Retrofit retrofit, int statuscode) {
-                GetUsersResponse result = (GetUsersResponse) response.body();
-                if (result != null && result.getUsers() != null && result.getUsers().size() > 0) {
-                    Users.getInstance().setUsers(result.getUsers());
-                    if (Users.getInstance().isExistMe(p_userID)) {
-                        my_id = p_userID;
-                        Toast.makeText(LoginActivity.this, "AutoLogin: " + p_userID, Toast.LENGTH_LONG).show();
-                        MySharedPreferencesManager.getInstance().putMyID(my_id);
-                        String userPW = MySharedPreferencesManager.getInstance().getMyPassword();
 
-                        if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
-                            goLogin(userPW);
-                        }
-
-                    }
-                }
-
-                listViewInit();
-//                hideLoadingDialog();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideLoadingDialog();
-            }
-
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                hideLoadingDialog();
-            }
-        });
-    }
 
     private void goLogin(String pw){
 //        showLoadingDialog();
-        ServerQuery.goLogin(my_id, pw, new ServerCallback() {
+        ServerQuery.goLogin(my_id, pw, new Callback() {
+
+
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit) {
                 LoginResponse result = (LoginResponse) response.body();
                 if (result != null && !TextUtils.isEmpty(result.getToken())) {
+                    App.isAliveMemory = true;
                     MyAccount.getInstance().setPosition(result.getPosition());
                     MyAccount.getInstance().setId(my_id);
                     ServiceGenerator.setToken(result.getToken());
-                    if(!result.getPosition().equals("manager")){
+                    if (!result.getPosition().equals("manager")) {
                         Intent lockScreenIntent = new Intent(LoginActivity.this, MainStaffActivity.class);
                         lockScreenIntent.putExtra("position", result.getPosition());
                         MyAccount.getInstance().setPosition(result.getPosition());
                         MySharedPreferencesManager.getInstance().setMyPosition(result.getPosition());
                         startActivity(lockScreenIntent);
                     }
-
-                    return;
                 }
                 hideLoadingDialog();
             }
@@ -132,32 +106,11 @@ public class LoginActivity extends CommonActivity{
                 hideLoadingDialog();
             }
 
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                hideLoadingDialog();
-            }
+
         });
     }
 
-    private void listViewInit(){
-        mListView = (ListView) findViewById(R.id.list);
-        mAdapter = new ListViewAdapter(getApplicationContext());
-        mListView.setAdapter(mAdapter);
 
-        mAdapter.notifyDataSetChanged();
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User user = mAdapter.getItem(position);
-                Intent passwordIntent = new Intent(LoginActivity.this, PasswordActivity.class);
-                passwordIntent.putExtra("name", user.getName());
-                passwordIntent.putExtra("id", user.getId());
-                startActivity(passwordIntent);
-            }
-        });
-    }
 
     public void back_click(View v) {
     	switch(v.getId()){
@@ -177,62 +130,202 @@ public class LoginActivity extends CommonActivity{
 		finish();
 	}
 
-	//////////////////////////listvIew/////////////////////////////////
-    private class ViewHolder{
-        public TextView emp_name;
+
+
+
+    class UserRecyclerViewAdpater extends MyRecyclerView.Adapter<MyRecyclerView.ViewHolder> {
+        private static final int VIEWTPYE_FOOTER = 0;
+        private boolean footerVisible;
+        public final Context mContext;
+        public static final int VIEWTPYE_ROOM = 1;
+        public UserRecyclerViewAdpater(Context context) {
+            mContext = context;
+        }
+
+        public MyRecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            switch (viewType) {
+                case VIEWTPYE_ROOM:
+                    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_item, parent, false);
+                    return new RoomViewHolder(view);
+                case VIEWTPYE_FOOTER:
+                    return new FooterViewHolder(parent);
+            }
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(final MyRecyclerView.ViewHolder holder, final int position) {
+            if (holder instanceof ViewHolderFactory.Updateable) {
+                try {
+                    ((ViewHolderFactory.Updateable) holder).update(Users.getInstance().getUsers().get(position));
+                }catch (Exception e){}
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return Users.getInstance().getUsers().size() + (useFooter() ? 1 : 0);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if(getItemCount() == position){
+                if(useFooter()){
+                    return VIEWTPYE_FOOTER;
+                }
+                return VIEWTPYE_ROOM;
+            }
+            return VIEWTPYE_ROOM;
+        }
+
+        private boolean useFooter() {
+            return footerVisible;
+        }
+
+        public void setFooterVisible(boolean b) {
+            if (footerVisible == b) {
+                //no change state
+                return;
+            }
+            footerVisible = b;
+            if (footerVisible) {
+                //invisible -> visible
+                notifyItemInserted(getItemCount() + 1);
+            } else {
+                //visible -> invisible
+                notifyItemRemoved(getItemCount());
+            }
+        }
 
     }
-    private class ListViewAdapter extends BaseAdapter {
-        private Context mContext = null;
 
-        public ListViewAdapter(Context mContext){
-            super();
-            this.mContext = mContext;
+
+    private class RoomViewHolder extends MyRecyclerView.ViewHolder implements ViewHolderFactory.Updateable<User> {
+        View view;
+        public TextView name;
+        public RoomViewHolder(final View itemView) {
+            super(itemView);
+            view = itemView;
+            name = (TextView)itemView.findViewById(R.id.emp_name);
+            name.setTypeface(font);
         }
 
         @Override
-        public int getCount(){
-            return Users.getInstance().getUsers().size();
+        public void update(final User item) {
+
+
+            name.setText(item.getName());
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent passwordIntent = new Intent(LoginActivity.this, PasswordActivity.class);
+                    passwordIntent.putExtra("name", item.getName());
+                    passwordIntent.putExtra("id", item.getId());
+                    startActivity(passwordIntent);
+                }
+            });
+
         }
-        
-        @Override
-        public User getItem(int position){
-            return Users.getInstance().getUsers().get(position);
-        }
-        
-        @Override
-        public long getItemId(int position){
-            return position;
-        }
-        
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
 
-            ViewHolder holder;
-            if(convertView == null){
-                holder = new ViewHolder();
+    }
 
-                LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.list_item, null);
+    private void refresh(){
+        showLoadingDialog();
+        ServerQuery.getUsers(new Callback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit) {
+                Log.e("ass","Asss");
+                GetUsersResponse result = (GetUsersResponse) response.body();
+                if (result != null && result.getUsers() != null && result.getUsers().size() > 0) {
+                    Users.getInstance().setUsers(result.getUsers());
+                    if (Users.getInstance().isExistMe(p_userID)) {
+                        my_id = p_userID;
+                        Toast.makeText(LoginActivity.this, "AutoLogin: " + p_userID, Toast.LENGTH_LONG).show();
+                        MySharedPreferencesManager.getInstance().putMyID(my_id);
+                        String userPW = MySharedPreferencesManager.getInstance().getMyPassword();
 
-                holder.emp_name = (TextView) convertView.findViewById(R.id.emp_name);
-                holder.emp_name.setTypeface(font);
+                        if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
+                            goLogin(userPW);
+                        } else {
+                            hideLoadingDialog();
+                        }
 
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
+                    } else {
+                        hideLoadingDialog();
+                    }
+                }
+
+                recyclerViewInit();
+                hideLoadingDialog();
             }
 
-            User mData = Users.getInstance().getUsers().get(position);
+            @Override
+            public void onFailure(Throwable t) {
+                hideLoadingDialog();
+                Log.e("fail",t.toString());
+            }
 
-            holder.emp_name.setText(mData.getName());
-
-            return convertView;
-        }
+        });
 
 
 
 
     }
+
+    public void showMore() {
+        if (loadingMoreContent == true) {
+            return;
+        }
+        loadingMoreContent = true;
+        adapter.setFooterVisible(loadingMoreContent);
+        loadingMoreContent = false;
+
+    }
+
+
+    @Override
+    public void onMappingXml() {
+        super.onMappingXml();
+        recyclerView = (MyRecyclerView)findViewById(R.id.list);
+    }
+
+    @Override
+    public void setListener() {
+        super.setListener();
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        adapter = new UserRecyclerViewAdpater(getApplicationContext());
+        refresh();
+
+        recyclerView.setOnScrollListener(new MyRecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                if (firstVisibleItemPosition == 0 && scrollCheck == true) {
+                    scrollCheck = false;
+                } else if (firstVisibleItemPosition > 0 && scrollCheck == false) {
+                    scrollCheck = true;
+                }
+
+
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && Messages.getInstance().getLists().size() != 0) {
+                    showMore();
+                }
+            }
+
+        });
+    }
+
+    private void recyclerViewInit(){
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 }
+

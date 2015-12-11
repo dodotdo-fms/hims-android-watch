@@ -4,53 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mycom.hims.scheduler.SetUpActivity">
-
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="118dp"
-        android:background="@drawable/off_xtouch"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="23dp"
-        android:id="@+id/btn_lockOnOff"
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:id="@+id/room_back"
+        android:background="@drawable/back"
         />
+
+
+
+    <FrameLayout
+        android:id="@+id/view_onOff"
+        android:layout_marginTop="163dp"
+        android:layout_marginLeft="6dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/btn_setup"
+        >
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="74dp"
+            android:background="@drawable/off_xtouch"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="51dp"
+            android:id="@+id/btn_lockOnOff"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="92dp"
+            android:layout_marginLeft="49dp"
+            android:textSize="45sp"
+            android:gravity="center"
+            android:id="@+id/tv_OnOff"
+            />
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/view_logout"
+        android:layout_marginTop="163dp"
+        android:layout_marginLeft="164dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/btn_setup"
+        >
     
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:layout_marginLeft="129dp"
-        android:textSize="60sp"
-        android:gravity="center"
-        android:id="@+id/tv_OnOff"
-        />
-
-
-    <TextView
-        android:layout_marginTop="159dp"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/noButtonBackgroundColor"
-        />
-    
     <Button
-        android:layout_width="85dp"
-        android:layout_height="83dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="@drawable/logouticon_xtouch"
-        android:layout_marginTop="206dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="46dp"
         android:id="@+id/btn_logout"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
-        android:layout_marginLeft="129dp"
-        android:textSize="60sp"
+        android:layout_marginTop="92dp"
+        android:layout_marginLeft="11dp"
+        android:textSize="45sp"
         android:gravity="center"
         android:textColor="@color/white"
         android:text="@string/logout"
         android:id="@+id/tv_logout"
         />
+    </FrameLayout>
 
 </RelativeLayout>

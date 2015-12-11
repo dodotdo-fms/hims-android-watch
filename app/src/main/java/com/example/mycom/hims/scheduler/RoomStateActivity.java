@@ -36,8 +36,6 @@ import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
-import com.example.mycom.hims.server_interface.ServerCallback;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -250,9 +248,9 @@ public class RoomStateActivity extends CommonActivity {
 
     private void goPost(String state){
         showLoadingDialog();
-        ServerQuery.postClean(String.valueOf(room_number), state, new ServerCallback() {
+        ServerQuery.postClean(String.valueOf(room_number), state, new Callback() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit) {
 
                     PostCleanResponse result = (PostCleanResponse)response.body();
                 if (result != null && "success".equals(result.getResult())) {
@@ -268,11 +266,6 @@ public class RoomStateActivity extends CommonActivity {
                 hideLoadingDialog();
             }
 
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                hideLoadingDialog();
-            }
         });
 
     }
@@ -294,9 +287,9 @@ public class RoomStateActivity extends CommonActivity {
 
     private void refresh(){
         showLoadingDialog();
-        ServerQuery.getRooms(null, null, null, String.valueOf(room_number), null, new ServerCallback() {
+        ServerQuery.getRooms(null, null, null, String.valueOf(room_number), null, new Callback() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit,int statuscode) {
+            public void onResponse(Response response, Retrofit retrofit) {
                 GetRoomsResponse result = (GetRoomsResponse)response.body();
                 if (result != null && result.getRooms() != null && result.getRooms().size() > 0) {
                     room = result.getRooms().get(0);
@@ -334,11 +327,7 @@ public class RoomStateActivity extends CommonActivity {
                 hideLoadingDialog();
             }
 
-            @Override
-            public void onFailure(int statuscode) {
-                super.onFailure(statuscode);
-                hideLoadingDialog();
-            }
+
         });
 
 

@@ -24,7 +24,7 @@ public class App extends Application {
     public  static Typeface font;
     public  static Context context;
     private Thread.UncaughtExceptionHandler uncaughtHandler;
-
+    public static boolean isAliveMemory;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,7 +32,7 @@ public class App extends Application {
         StrictMode.setThreadPolicy(policy);
         font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         context = getApplicationContext();
-        setExceptionHandler();
+//        setExceptionHandler();
         goGcmRegister();
         goScreenService();
     }
@@ -47,9 +47,17 @@ public class App extends Application {
         startService(intent3);
     }
 
-    private void goScreenService(){
+    public static void goScreenService(){
         if(MySharedPreferencesManager.getInstance().getIsScreenLock()) {
             Intent i = new Intent(context, ScreenService.class);
+            context.startService(i);
+        }
+    }
+
+    public static void stopScreenService(){
+        if(MySharedPreferencesManager.getInstance().getIsScreenLock()) {
+            Intent i = new Intent(context, ScreenService.class);
+            i.setAction("stop");
             context.startService(i);
         }
     }
