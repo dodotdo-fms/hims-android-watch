@@ -31,7 +31,7 @@
 
 
          <ImageView
-             android:id="@+id/iv_setUp"
+             android:id="@+id/iv_setup"
              android:layout_marginTop="10dp"
              android:layout_marginLeft="214dp"
              android:layout_width="100dp"

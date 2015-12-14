@@ -1,5 +1,7 @@
 package com.example.mycom.hims.server_interface;
 
+import android.util.Log;
+
 import com.example.mycom.hims.common.NetDefine;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;
@@ -69,6 +71,7 @@ public class ServiceGenerator implements NetDefine{
 
 
                     Request request = requestBuilder.build();
+                    Log.e("header",request.header("Content-Type"));
                     return chain.proceed(request);
                 }
             });

@@ -21,7 +21,7 @@ public class MainEnginnerActivity extends CommonActivity {
     ImageView mIv_setUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main_Enginner);
+        setContentView(R.layout.activity_main_enginner);
         super.onCreate(savedInstanceState);
     }
 

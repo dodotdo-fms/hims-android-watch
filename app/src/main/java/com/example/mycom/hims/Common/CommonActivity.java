@@ -38,6 +38,8 @@ public abstract class CommonActivity extends Activity implements DefaultSetting 
 
     }
 
+
+
     @Override
     public void init() {
         onMappingXml();

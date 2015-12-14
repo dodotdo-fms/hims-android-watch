@@ -117,13 +117,13 @@ public class ServerQuery {
     public static void postMsg(String channelId,File file, retrofit.Callback callback){
         RequestBody requestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postMsg(channelId, requestBody);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class,true).postMsg(channelId, requestBody);
         call.enqueue(callback);
     }
 
     public static void postRegisterDeviceId(final String deviceId){
         RequestRegisterDeviceId request = new RequestRegisterDeviceId("android",deviceId);
-        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class,true).postRegisterDeviceId(request);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postRegisterDeviceId(request);
         call.enqueue(new retrofit.Callback() {
 
             @Override
