@@ -1,4 +1,4 @@
-package com.example.mycom.hims.Common.Utill;
+package com.example.mycom.hims.common.utill;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

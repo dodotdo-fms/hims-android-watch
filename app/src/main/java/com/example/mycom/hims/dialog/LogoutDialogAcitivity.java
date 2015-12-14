@@ -1,29 +1,19 @@
-package com.example.mycom.hims.DialogActivity;
+package com.example.mycom.hims.dialog;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.mycom.hims.Common.App;
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.Common.MyAccount;
+import com.example.mycom.hims.common.App;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.common.MyAccount;
 import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.model.api_response.LogoutResponse;
-import com.example.mycom.hims.scheduler.LoginActivity;
-import com.example.mycom.hims.server_interface.QueryHimsServer;
-import com.example.mycom.hims.server_interface.SchedulerServerAPI;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.ServiceGenerator;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -35,7 +25,6 @@ public class LogoutDialogAcitivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_logout_dialog_acitivity);
-        isUseLoadingDialog =true;
         super.onCreate(savedInstanceState);
     }
 
@@ -79,7 +68,7 @@ public class LogoutDialogAcitivity extends CommonActivity {
                                 editor.commit();
                                 MyAccount.getInstance().setId(null);
                                 MyAccount.getInstance().setPosition(null);
-                                ServiceGenerator.setToken(null);
+                                ServiceGenerator.setToken("");
                                 App.cleanMemory();
                                 setResult(1);
                                 finish();

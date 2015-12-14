@@ -1,4 +1,4 @@
-package com.example.mycom.hims.Common;
+package com.example.mycom.hims.common;
 
 import android.app.AlarmManager;
 import android.app.Application;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.example.mycom.hims.MainActivity;
 import com.example.mycom.hims.RegistrationIntentService;
@@ -15,14 +16,15 @@ import com.example.mycom.hims.data.Channels;
 import com.example.mycom.hims.data.Messages;
 import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
-import com.example.mycom.hims.model.History;
+import com.example.mycom.hims.server_interface.ServiceGenerator;
 
 /**
  * Created by Omjoon on 2015. 11. 26..
  */
 public class App extends Application {
-    public  static Typeface font;
-    public  static Context context;
+    public static Typeface font;
+    public static Context context;
+    public static boolean isLogin=false;
     private Thread.UncaughtExceptionHandler uncaughtHandler;
     public static boolean isAliveMemory;
     @Override
@@ -33,7 +35,6 @@ public class App extends Application {
         font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         context = getApplicationContext();
 //        setExceptionHandler();
-        goGcmRegister();
         goScreenService();
     }
 
@@ -42,9 +43,10 @@ public class App extends Application {
         Thread.setDefaultUncaughtExceptionHandler(new AppRestarter());
     }
 
-    private void goGcmRegister(){
-        Intent intent3 = new Intent(this, RegistrationIntentService.class);
-        startService(intent3);
+    public static void goGcmRegister(){
+        Log.e("ass","assd");
+        Intent intent3 = new Intent(context, RegistrationIntentService.class);
+        context.startService(intent3);
     }
 
     public static void goScreenService(){
@@ -66,6 +68,7 @@ public class App extends Application {
         Channels.getInstance().clean();
         Rooms.getInstance().clean();
         Messages.getInstance().clean();
+        isLogin = false;
 
     }
 
@@ -79,4 +82,6 @@ public class App extends Application {
             System.exit(2);
         }
     }
+
+
 }

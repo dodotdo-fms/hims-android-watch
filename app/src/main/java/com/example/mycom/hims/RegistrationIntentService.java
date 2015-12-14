@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.mycom.hims.common.App;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -21,7 +22,7 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
-    private static final String SENDRID = "680503728430";
+    private static final String SENDRID = "266742923114";
 
     public RegistrationIntentService() {
         super(TAG);
@@ -30,6 +31,7 @@ public class RegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.e("ass","assd2");
 
         try {
             // [START register_for_gcm]
@@ -41,6 +43,7 @@ public class RegistrationIntentService extends IntentService {
             InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken(SENDRID,
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+//            String token = instanceID.getId();
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
             Log.e(TAG, "GCM Registration Token: " + token);
@@ -49,7 +52,7 @@ public class RegistrationIntentService extends IntentService {
             sendRegistrationToServer(token);
 
             // Subscribe to topic channels
-            subscribeTopics(token);
+//            subscribeTopics(token);
 
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
@@ -93,5 +96,16 @@ public class RegistrationIntentService extends IntentService {
         }
     }
     // [END subscribe_topics]
+
+    public static void deleteToken(){
+        InstanceID instanceID = InstanceID.getInstance(App.context);
+        try {
+            instanceID.deleteToken(SENDRID,
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE);
+            Log.e(TAG,"success delete Token");
+        }catch (IOException e){
+            Log.e(TAG,"error delete Token");
+        }
+    }
 
 }

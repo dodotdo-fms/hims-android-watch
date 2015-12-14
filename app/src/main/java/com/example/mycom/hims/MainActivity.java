@@ -42,53 +42,34 @@ public class MainActivity extends Activity {
 
         
 
-//        // REST API Test
-//    	LoginResponse loginResponse = SchedulerServerAPI.login("admin", "1");
-//    	String token = loginResponse.getToken();
-//        if (!TextUtils.isEmpty(token)) {
-//        	QueryHimsServer.setToken(token);
-//        	GetUsersResponse response1 = SchedulerServerAPI.getUsers(null, null, null, null);
-//            GetMyInfoResponse response2 = SchedulerServerAPI.getMyInfo();
-//            GetRoomsResponse response3 = SchedulerServerAPI.getRooms(null, null, null);
-//            GetFormsResponse response4 = SchedulerServerAPI.getForms(null, null, null, null);
-//            GetFormsResponse response5 = SchedulerServerAPI.getFormById("1");
-//            GetEvalResponse response6 = SchedulerServerAPI.getEvaluation(null, null, null);
-//            LogoutResponse response7 = SchedulerServerAPI.logout();
-//        }
-
         // Check WIFI connectivity
         if (isNetworkEnabled() == false) {
             showNoNetworkAlert();
         }
         // Check license
-        String deviceId = generateDeviceId();
+        String deviceId = generateDeviceId().substring(0,17);
         /* CAVEAT!!
          * In some devices, mac address is changed on every boot.
          * So, we only check the most significant 64 bits of UUID here.
         */
-        if (deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-dd24-7867-ffff-ffffcc7cf5d3".substring(0, 17)) != 0 && // Nexus 7 (ys)
-            deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-c78c-00a1-0000-00006bdcde9a".substring(0, 17)) != 0 && // Android native watch (sh)
-            deviceId.substring(0, 17).compareToIgnoreCase("00000000-1db8-2da0-0000-00001b081ef7".substring(0, 17)) != 0 && // G3 (ys)
-            deviceId.substring(0, 17).compareToIgnoreCase("00000000-1c53-f3fa-ffff-ffffbd255f40".substring(0, 17)) != 0 && // dh device
-            deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-f4a0-5c38-0000-000041584bf6".substring(0, 17)) != 0 && // X touch (ik)
-            deviceId.substring(0, 17).compareToIgnoreCase("00000000-7727-ea57-0000-000009f6e6bb".substring(0, 17)) != 0 && // dh device
-            deviceId.substring(0, 17).compareToIgnoreCase("00000000-2156-92c8-ffff-ffff84dcbae5".substring(0, 17)) != 0 && // yj tablet
-            deviceId.substring(0, 17).compareToIgnoreCase("00000000-5e62-7be5-ffff-ffffee0cd440".substring(0, 17)) != 0 && // yj device
-            deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-cce1-96cf-ffff-ffffe67b9ee3".substring(0, 17)) != 0 && // beom
-            deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-b1dc-a14e-ffff-fffff74e1d5a".substring(0, 17)) != 0)	// Galaxy Tab 3
+        if ("ffffffff-dd24-7867-ffff-ffffcc7cf5d3".startsWith(deviceId) && // Nexus 7 (ys)
+            "ffffffff-c78c-00a1-0000-00006bdcde9a".startsWith(deviceId) && // Android native watch (sh)
+            "00000000-1db8-2da0-0000-00001b081ef7".startsWith(deviceId) && // G3 (ys)
+            "00000000-1c53-f3fa-ffff-ffffbd255f40".startsWith(deviceId) && // dh device
+            "ffffffff-f4a0-5c38-0000-000041584bf6".startsWith(deviceId) && // X touch (ik)
+            "00000000-7727-ea57-0000-000009f6e6bb".startsWith(deviceId) && // dh device
+            "00000000-2156-92c8-ffff-ffff84dcbae5".startsWith(deviceId) && // yj tablet
+            "00000000-5e62-7be5-ffff-ffffee0cd440".startsWith(deviceId) && // yj device
+            "ffffffff-cce1-96cf-ffff-ffffe67b9ee3".startsWith(deviceId) && // beom
+            "ffffffff-b1dc-a14e-ffff-fffff74e1d5a".startsWith(deviceId))	// Galaxy Tab 3
         {
             showLicenseAlert();
         }
 
-        if (deviceId.substring(0, 17).compareToIgnoreCase("ffffffff-dd24-7867-ffff-ffffcc7cf5d3".substring(0, 17)) != 0) {
 
-        }
 
-//        String s1 = deviceId.substring(0, 17);
-//        String s2 = "ffffffff-dd24-7867-ffff-ffffcc7cf5d3".substring(0, 17);
-//        s1.equalsIgnoreCase(s2);
-//
-//        "ffffffff-dd24-7867-ffff-ffffcc7cf5d3".startsWith(s1)
+
+
 
 
 

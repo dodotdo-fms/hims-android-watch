@@ -1,4 +1,4 @@
-package com.example.mycom.hims.View;
+package com.example.mycom.hims.view;
 
 import android.view.LayoutInflater;
 import android.view.View;

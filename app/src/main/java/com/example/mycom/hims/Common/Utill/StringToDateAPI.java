@@ -1,9 +1,5 @@
-package com.example.mycom.hims.Common.Utill;
+package com.example.mycom.hims.common.utill;
 
-import android.util.Log;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**

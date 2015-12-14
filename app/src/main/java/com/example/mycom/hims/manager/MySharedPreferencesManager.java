@@ -3,7 +3,7 @@ package com.example.mycom.hims.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.mycom.hims.Common.App;
+import com.example.mycom.hims.common.App;
 
 /**
  * Created by Omjoon on 2015. 11. 28..

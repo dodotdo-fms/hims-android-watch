@@ -7,7 +7,7 @@
 
 
 
-    <com.example.mycom.hims.View.MyRecyclerView
+    <com.example.mycom.hims.view.MyRecyclerView
         android:id="@+id/list"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"

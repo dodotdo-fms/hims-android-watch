@@ -1,4 +1,4 @@
-package com.example.mycom.hims.View;
+package com.example.mycom.hims.view;
 
 import android.content.Context;
 import android.os.SystemClock;
@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.logging.Handler;
 
 /**
  * Created by Omjoon on 2015. 11. 26..

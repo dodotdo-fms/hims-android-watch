@@ -3,7 +3,7 @@ package com.example.mycom.hims.server_interface;
 import android.util.Base64;
 import android.util.Log;
 
-import com.example.mycom.hims.Common.NetDefine;
+import com.example.mycom.hims.common.NetDefine;
 import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.google.gson.Gson;
 
@@ -17,10 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
-
-import retrofit.Retrofit;
 
 /**
  * Created by corekey on 10/5/15.

@@ -4,9 +4,7 @@
     tools:context="com.example.mycom.hims.voice_messaging.MessageSendActivity"
     android:background="#000">
 
-    <include layout="@layout/view_loading"
-        android:id="@+id/view_loading"
-        />
+
 
 
 
@@ -37,7 +35,7 @@
         android:layout_height="100dp"
         android:layout_marginLeft="160dp"
         >
-        <com.example.mycom.hims.View.TimerView
+        <com.example.mycom.hims.view.TimerView
             android:layout_marginTop="4dp"
             android:id="@+id/timer"
             android:layout_marginLeft="51dp"

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.mycom.hims.voice_messaging.UIPageActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -30,14 +31,21 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        Log.e(TAG, "From: " + from);
+        Log.e(TAG, "Message: " + message);
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
             // normal downstream message.
         }
+
+
+        Intent intent = new Intent(getApplicationContext(), UIPageActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("username","test");
+        intent.putExtra("timestamp","test");
+        intent.putExtra("channel_id","1");
+        startActivity(intent);
 
         // [START_EXCLUDE]
         /**
@@ -81,4 +89,9 @@ public class MyGcmListenerService extends GcmListenerService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
+    private void getVoiceMessage(){
+
+    }
+
 }

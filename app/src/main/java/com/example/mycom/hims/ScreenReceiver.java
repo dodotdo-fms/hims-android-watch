@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
-import com.example.mycom.hims.Common.App;
+import com.example.mycom.hims.common.App;
 import com.example.mycom.hims.scheduler.LoginActivity;
 
 public class ScreenReceiver extends BroadcastReceiver {

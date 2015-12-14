@@ -4,23 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,38 +21,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.mycom.hims.Common.App;
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.Common.Utill.DateToStringAPI;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
+import com.example.mycom.hims.common.App;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.common.utill.DateToStringAPI;
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.View.FooterViewHolder;
-import com.example.mycom.hims.View.MyRecyclerView;
-import com.example.mycom.hims.View.TimerView;
-import com.example.mycom.hims.View.ViewHolderFactory;
-import com.example.mycom.hims.data.Channels;
+import com.example.mycom.hims.view.FooterViewHolder;
+import com.example.mycom.hims.view.MyRecyclerView;
+import com.example.mycom.hims.view.TimerView;
+import com.example.mycom.hims.view.ViewHolderFactory;
 import com.example.mycom.hims.data.Messages;
 import com.example.mycom.hims.data.Users;
-import com.example.mycom.hims.model.History;
-import com.example.mycom.hims.model.User;
 import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
 import com.example.mycom.hims.server_interface.ServerQuery;
-import com.example.mycom.hims.server_interface.VMServerAPI;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
-import retrofit.http.GET;
 
 
 public class HistoryActivity extends CommonActivity {

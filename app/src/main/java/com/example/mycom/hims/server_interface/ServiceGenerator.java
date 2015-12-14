@@ -1,10 +1,6 @@
 package com.example.mycom.hims.server_interface;
 
-import android.util.Base64;
-import android.util.Log;
-
-import com.example.mycom.hims.Common.NetDefine;
-import com.google.gson.Gson;
+import com.example.mycom.hims.common.NetDefine;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -30,11 +26,22 @@ public class ServiceGenerator implements NetDefine{
                     .baseUrl(BASIC_PATH)
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-mm-dd HH:mm:ss").create()));
 
+    private static boolean isFile =false;
     public static <S> S createService(Class<S> serviceClass) {
         if (logging == null) {
             logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
+        isFile =false;
+        return createService(serviceClass, token);
+    }
+
+    public static <S> S createService(Class<S> serviceClass,boolean bool) {
+        if (logging == null) {
+            logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }
+        isFile = bool;
         return createService(serviceClass, token);
     }
 
@@ -56,6 +63,10 @@ public class ServiceGenerator implements NetDefine{
                             .header("Authorization", "Basic " + authToken)
                             .header("Content-Type", "application/json")
                             .method(original.method(), original.body());
+                    if(isFile) {
+                        requestBuilder.header("Content-Type","multipart/form-data");
+                    }
+
 
                     Request request = requestBuilder.build();
                     return chain.proceed(request);

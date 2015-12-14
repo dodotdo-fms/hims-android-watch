@@ -1,9 +1,5 @@
 package com.example.mycom.hims.scheduler;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,31 +7,25 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.DialogActivity.RoomAlreadyCleanDialogAcitivity;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.common.MyAccount;
+import com.example.mycom.hims.dialog.RoomAlreadyCleanDialogAcitivity;
 import com.example.mycom.hims.MainStaffActivity;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.View.FooterViewHolder;
-import com.example.mycom.hims.View.MyRecyclerView;
-import com.example.mycom.hims.View.ViewHolderFactory;
+import com.example.mycom.hims.view.FooterViewHolder;
+import com.example.mycom.hims.view.MyRecyclerView;
+import com.example.mycom.hims.view.ViewHolderFactory;
 import com.example.mycom.hims.data.Messages;
 import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.server_interface.ServerQuery;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -54,7 +44,6 @@ public class AssignedRoomActivity extends CommonActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_assigned_room);
-        isUseLoadingDialog = true;
         super.onCreate(savedInstanceState);
 
 	}

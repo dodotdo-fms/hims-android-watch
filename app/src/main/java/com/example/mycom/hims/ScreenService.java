@@ -35,7 +35,7 @@ public class ScreenService extends Service {
 
         if(intent != null){
             Log.e("ss1","ss0");
-            if(intent.getAction()==null){
+            if(intent.getAction() == null){
                 Log.e("ss1","ss2");
                 if(mReceiver==null){
                     Log.e("ss1","ss3");
@@ -43,8 +43,7 @@ public class ScreenService extends Service {
                     IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
                     registerReceiver(mReceiver, filter);
                 }
-            }
-            else{
+            }else{
                 if(mReceiver != null) {
                     unregisterReceiver(mReceiver);
                 }

@@ -2,7 +2,7 @@ package com.example.mycom.hims.server_interface;
 
 import org.json.JSONObject;
 
-import com.example.mycom.hims.Common.NetDefine;
+import com.example.mycom.hims.common.NetDefine;
 import com.example.mycom.hims.OnAsyncTaskCompleted;
 
 import java.io.InputStream;

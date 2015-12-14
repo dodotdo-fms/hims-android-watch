@@ -4,10 +4,8 @@
     tools:context="com.example.mycom.hims.scheduler.AssignedRoomActivity"
     android:background="#000">
 
-    <include layout="@layout/view_loading"
-        android:id="@+id/view_loading"
-        />
-    <com.example.mycom.hims.View.MyRecyclerView
+
+    <com.example.mycom.hims.view.MyRecyclerView
         android:id="@+id/list_room"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"

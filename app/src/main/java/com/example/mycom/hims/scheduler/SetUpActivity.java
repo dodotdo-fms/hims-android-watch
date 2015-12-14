@@ -2,19 +2,17 @@ package com.example.mycom.hims.scheduler;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mycom.hims.Common.App;
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.DialogActivity.LogoutDialogAcitivity;
+import com.example.mycom.hims.common.App;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.dialog.LogoutDialogAcitivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
-import com.example.mycom.hims.server_interface.ServerQuery;
 
 public class SetUpActivity extends CommonActivity {
     Button mBtn_OnOff;
@@ -107,6 +105,7 @@ public class SetUpActivity extends CommonActivity {
             mTv_OnOff.setTextColor(getResources().getColor(R.color.white));
             mTv_OnOff.setText("Off");
             mBtn_OnOff.setBackgroundDrawable(getResources().getDrawable(R.drawable.off_xtouch));
+            App.stopScreenService();
         }else{
             mTv_OnOff.setText("On");
             mTv_OnOff.setTextColor(getResources().getColor(R.color.yesButtonBackgroundColor));

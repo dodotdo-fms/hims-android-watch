@@ -1,8 +1,6 @@
 package com.example.mycom.hims.voice_messaging;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,27 +12,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
+import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.View.TimerView;
+import com.example.mycom.hims.view.TimerView;
 import com.example.mycom.hims.data.Channels;
 import com.example.mycom.hims.model.Channel;
 import com.example.mycom.hims.server_interface.ServerQuery;
-import com.example.mycom.hims.server_interface.VMServerAPI;
-import com.example.mycom.hims.thread.TimerDisplayThread;
-import com.example.mycom.hims.thread.VMReceiverThread;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.util.Random;
 
 import retrofit.Callback;
@@ -64,7 +51,6 @@ public class MessageSendActivity extends CommonActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isUseLoadingDialog = true;
         setContentView(R.layout.activity_walkie);
         super.onCreate(savedInstanceState);
     }
@@ -118,6 +104,13 @@ public class MessageSendActivity extends CommonActivity{
                 mTimerView.setText("00:00 ");
             }
         });
+
+
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
 
     }
 
@@ -190,25 +183,25 @@ public class MessageSendActivity extends CommonActivity{
 
                                 // SEND FILE
 
-//                                    ServerQuery.postMsg(mChannel.getId(), file, new Callback() {
-//                                        @Override
-//                                        public void onResponse(Response response, Retrofit retrofit) {
-//                                            Log.e("ddd","aaa");
-//                                            hideLoadingDialog();
-//                                            isSending2 = false;
-//                                            isSending = false;
-//                                        }
-//
-//                                        @Override
-//                                        public void onFailure(Throwable t) {
-//                                            t.printStackTrace();
-//                                            Log.e("ddd12", t.toString());
-//
-//                                            hideLoadingDialog();
-//                                            isSending2 = false;
-//                                            isSending = false;
-//                                        }
-//                                    });
+                                    ServerQuery.postMsg(mChannel.getId(), file, new Callback() {
+                                        @Override
+                                        public void onResponse(Response response, Retrofit retrofit) {
+                                            Log.e("ddd","aaa");
+                                            hideLoadingDialog();
+                                            isSending2 = false;
+                                            isSending = false;
+                                        }
+
+                                        @Override
+                                        public void onFailure(Throwable t) {
+                                            t.printStackTrace();
+                                            Log.e("ddd12", t.toString());
+
+                                            hideLoadingDialog();
+                                            isSending2 = false;
+                                            isSending = false;
+                                        }
+                                    });
 //                                    VMServerAPI.sendMsgToChannel(Integer.valueOf(mChannel.getId()),
 //                                            recordManager.filePath + filename[0], new OnAsyncTaskCompleted() {
 //                                                @Override

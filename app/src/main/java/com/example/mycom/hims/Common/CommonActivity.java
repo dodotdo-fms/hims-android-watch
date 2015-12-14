@@ -1,8 +1,9 @@
-package com.example.mycom.hims.Common;
+package com.example.mycom.hims.common;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.example.mycom.hims.R;
 
@@ -10,8 +11,8 @@ import com.example.mycom.hims.R;
  * Created by Omjoon on 2015. 11. 26..
  */
 public abstract class CommonActivity extends Activity implements DefaultSetting {
-    public boolean isUseLoadingDialog = false;
-    View mView_loading;
+    View rootView;
+    View loadingView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,21 +21,16 @@ public abstract class CommonActivity extends Activity implements DefaultSetting 
 
     @Override
     public void onMappingXml() {
-        if(isUseLoadingDialog){
-            mView_loading = (View)findViewById(R.id.view_loading);
-        }
+         rootView = this.getWindow().getDecorView().findViewById(android.R.id.content);
+        loadingView = getLayoutInflater().inflate(R.layout.view_loading,null);
     }
 
     public void showLoadingDialog(){
-        if(mView_loading.getVisibility() != View.VISIBLE) {
-            mView_loading.setVisibility(View.VISIBLE);
-        }
+        ((FrameLayout)rootView).addView(loadingView);
     }
 
     public void hideLoadingDialog(){
-        if(mView_loading.getVisibility() == View.VISIBLE) {
-            mView_loading.setVisibility(View.GONE);
-        }
+        ((FrameLayout)rootView).removeView(loadingView);
     }
 
     @Override

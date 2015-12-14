@@ -78,10 +78,10 @@
     <Button
         android:layout_marginLeft="164dp"
         android:layout_marginTop="163dp"
-        android:id="@+id/btn_room"
+        android:id="@+id/btn_refair"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/xtouch_room"
+        android:background="@drawable/xtouch_eng"
         />
         </RelativeLayout>
     </ScrollView>

@@ -1,12 +1,10 @@
-package com.example.mycom.hims.DialogActivity;
+package com.example.mycom.hims.dialog;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.mycom.hims.Common.CommonActivity;
+import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.R;
 
 public class AreYouSureDialogActivity extends CommonActivity {

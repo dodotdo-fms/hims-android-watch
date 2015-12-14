@@ -3,9 +3,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.mycom.hims.scheduler.RoomStateActivity"
     android:background="#262626">
-    <include layout="@layout/view_loading"
-        android:id="@+id/view_loading"
-        />
 
 
 

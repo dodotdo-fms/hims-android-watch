@@ -1,44 +1,29 @@
 package com.example.mycom.hims.scheduler;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.DialogActivity.AreYouSureDialogActivity;
-import com.example.mycom.hims.OnAsyncTaskCompleted;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.dialog.AreYouSureDialogActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
 import com.example.mycom.hims.server_interface.ServerQuery;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -57,7 +42,6 @@ public class RoomStateActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_room_state);
-        isUseLoadingDialog = true;
         super.onCreate(savedInstanceState);
 
 

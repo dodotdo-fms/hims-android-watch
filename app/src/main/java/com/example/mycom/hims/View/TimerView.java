@@ -1,15 +1,13 @@
-package com.example.mycom.hims.View;
+package com.example.mycom.hims.view;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.mycom.hims.Common.Utill.DateToStringAPI;
-import com.example.mycom.hims.Common.Utill.StringToDateAPI;
+import com.example.mycom.hims.common.utill.DateToStringAPI;
+import com.example.mycom.hims.common.utill.StringToDateAPI;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**

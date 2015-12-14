@@ -1,4 +1,4 @@
-package com.example.mycom.hims.View;
+package com.example.mycom.hims.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

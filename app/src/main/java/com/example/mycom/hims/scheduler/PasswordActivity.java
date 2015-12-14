@@ -1,10 +1,5 @@
 package com.example.mycom.hims.scheduler;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,28 +8,19 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.Common.MyAccount;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.common.MyAccount;
 import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.server_interface.QueryHimsServer;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.example.mycom.hims.server_interface.ServiceGenerator;
-import com.example.mycom.hims.thread.TimerDisplayThread;
-import com.example.mycom.hims.thread.VMReceiverThread;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -55,7 +41,6 @@ public class PasswordActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_password);
-        isUseLoadingDialog = true;
         super.onCreate(savedInstanceState);
         mBtn_cancel = (ImageView)findViewById(R.id.btn_cancel);
 

@@ -1,17 +1,17 @@
 {
   "project_info": {
-    "project_id": "himsandroid-6f569",
-    "project_number": "680503728430",
-    "name": "himsAndroid"
+    "project_id": "hims-1c032",
+    "project_number": "266742923114",
+    "name": "hims"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:680503728430:android:bbf4e94021aee3ee",
-        "client_id": "android:com.exmaple.mycom.hims",
+        "mobilesdk_app_id": "1:266742923114:android:7a621d3b0af12a59",
+        "client_id": "android:com.example.mycom.hims",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.exmaple.mycom.hims"
+          "package_name": "com.example.mycom.hims"
         }
       },
       "oauth_client": [],

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,31 +12,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mycom.hims.Common.App;
-import com.example.mycom.hims.Common.CommonActivity;
-import com.example.mycom.hims.Common.DefaultSetting;
-import com.example.mycom.hims.Common.MyAccount;
-import com.example.mycom.hims.DialogActivity.RoomAlreadyCleanDialogAcitivity;
+import com.example.mycom.hims.common.App;
+import com.example.mycom.hims.common.CommonActivity;
+import com.example.mycom.hims.common.DefaultSetting;
+import com.example.mycom.hims.common.MyAccount;
 import com.example.mycom.hims.MainActivity;
 import com.example.mycom.hims.MainStaffActivity;
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.View.FooterViewHolder;
-import com.example.mycom.hims.View.MyRecyclerView;
-import com.example.mycom.hims.View.ViewHolderFactory;
+import com.example.mycom.hims.view.FooterViewHolder;
+import com.example.mycom.hims.view.MyRecyclerView;
+import com.example.mycom.hims.view.ViewHolderFactory;
 import com.example.mycom.hims.data.Messages;
-import com.example.mycom.hims.data.Rooms;
 import com.example.mycom.hims.data.Users;
 import com.example.mycom.hims.manager.MySharedPreferencesManager;
-import com.example.mycom.hims.model.Room;
 import com.example.mycom.hims.model.User;
-import com.example.mycom.hims.model.api_response.GetRoomsResponse;
 import com.example.mycom.hims.model.api_response.GetUsersResponse;
 import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.server_interface.ServerQuery;
@@ -47,7 +38,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class LoginActivity extends CommonActivity implements DefaultSetting{
+ public class LoginActivity extends CommonActivity implements DefaultSetting{
     private Typeface font;
     private MyRecyclerView recyclerView;
     private UserRecyclerViewAdpater adapter;
@@ -58,7 +49,6 @@ public class LoginActivity extends CommonActivity implements DefaultSetting{
     boolean loadingMoreContent =false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isUseLoadingDialog = true;
         setContentView(R.layout.activity_login);
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences("PrefName", MODE_PRIVATE);
@@ -86,6 +76,7 @@ public class LoginActivity extends CommonActivity implements DefaultSetting{
             public void onResponse(Response response, Retrofit retrofit) {
                 LoginResponse result = (LoginResponse) response.body();
                 if (result != null && !TextUtils.isEmpty(result.getToken())) {
+                    App.goGcmRegister();
                     App.isAliveMemory = true;
                     MyAccount.getInstance().setPosition(result.getPosition());
                     MyAccount.getInstance().setId(my_id);

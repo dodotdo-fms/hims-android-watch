@@ -123,7 +123,7 @@ public class ServerQuery {
 
     public static void postRegisterDeviceId(final String deviceId){
         RequestRegisterDeviceId request = new RequestRegisterDeviceId("android",deviceId);
-        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postRegisterDeviceId(request);
+        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class,true).postRegisterDeviceId(request);
         call.enqueue(new retrofit.Callback() {
 
             @Override
