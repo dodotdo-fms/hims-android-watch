@@ -28,6 +28,7 @@ import com.example.mycom.hims.common.App;
 import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.common.utill.DateToStringAPI;
 import com.example.mycom.hims.R;
+import com.example.mycom.hims.common.utill.FileConverter;
 import com.example.mycom.hims.view.FooterViewHolder;
 import com.example.mycom.hims.view.MyRecyclerView;
 import com.example.mycom.hims.view.TimerView;
@@ -290,30 +291,7 @@ public class HistoryActivity extends CommonActivity {
                 }
                 List<VoiceMessage> lists = new ArrayList<>();
                 for(VoiceMessage msg : result.getVoiceMessage()) {
-                    byte[] decodedBytes = Base64.decode(msg.getMessage(), 0);
-
-
-                    File file = new File(RecordManager.filePath + msg.getTimestamp().getTime());
-                    if (file.exists() == false) {
-                        try {
-                            file.createNewFile();
-                        } catch (IOException ioe) {
-                            Log.e(getClass().getSimpleName().toString(), "cannot create file: " +
-                                    ioe.getStackTrace());
-                        }
-                    }
-                    FileOutputStream os = null;
-                    try {
-                        os = new FileOutputStream(file, false);
-                        os.write(decodedBytes);
-                        os.close();
-                    } catch (FileNotFoundException fnfe) {
-                        Log.e(getClass().getSimpleName().toString(), "file not found: " +
-                                fnfe.getStackTrace());
-                    } catch (IOException ioe) {
-                        Log.e(getClass().getSimpleName().toString(), "IOException: " + ioe.getStackTrace());
-                    }
-                    msg.setFilepath(file.getPath());
+                    msg.setFilepath(FileConverter.convert(msg.getMessage(),String.valueOf(msg.getTimestamp().getTime())));
                     lists.add(msg);
                 }
 

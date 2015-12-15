@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.mycom.hims.voice_messaging.UIPageActivity;
+import com.example.mycom.hims.voice_messaging.MessageSendActivity;
+import com.example.mycom.hims.voice_messaging.ReceiveMessageActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -31,22 +32,25 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String type = data.getString("type");
         Log.e(TAG, "From: " + from);
         Log.e(TAG, "Message: " + message);
-
+        Intent intent = new Intent(getApplicationContext(), MessageSendActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
             // normal downstream message.
         }
 
+        switch (type){
+            case "message" :
+                receiveMessage(data);
+                break;
 
-        Intent intent = new Intent(getApplicationContext(), UIPageActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("username","test");
-        intent.putExtra("timestamp","test");
-        intent.putExtra("channel_id","1");
-        startActivity(intent);
-
+            default:
+                return;
+        }
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.
@@ -59,7 +63,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+//        sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]
@@ -90,7 +94,19 @@ public class MyGcmListenerService extends GcmListenerService {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
-    private void getVoiceMessage(){
+    private void receiveMessage(Bundle bundle){
+        Intent intent = new Intent();
+        intent.putExtra("data", bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if(MessageSendActivity.isOnSendActivity){
+            if(MessageSendActivity.chanelId.equals(bundle.get("channel_id")))
+            intent.setClass(getApplicationContext(), MessageSendActivity.class);
+            else
+                intent.setClass(getApplicationContext(), ReceiveMessageActivity.class);
+        }else {
+            intent.setClass(getApplicationContext(), ReceiveMessageActivity.class);
+        }
+        startActivity(intent);
 
     }
 

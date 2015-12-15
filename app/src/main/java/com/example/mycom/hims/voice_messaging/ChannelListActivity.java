@@ -80,10 +80,6 @@ public class ChannelListActivity extends CommonActivity {
             	startActivity(lockScreenIntent);
                 finish();
                 break;
-//            case R.id.plus:
-//                Intent intent = new Intent(ChannelListActivity.this, PeerSelectionActivity.class);
-//                startActivity(intent);
-//                break;
             case R.id.historyButton:
                 Intent i =new Intent(ChannelListActivity.this, HistoryActivity.class);
                 startActivity(i);

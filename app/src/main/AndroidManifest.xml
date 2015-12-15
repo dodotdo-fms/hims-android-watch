@@ -115,7 +115,7 @@
             android:name=".voice_messaging.HistoryActivity"
             android:label="@string/title_activity_history_page" />
         <activity
-            android:name=".voice_messaging.UIPageActivity"
+            android:name=".voice_messaging.ReceiveMessageActivity"
             android:label="@string/title_activity_ui_page" />
         <activity
             android:name=".scheduler.AssignedRoomActivity"

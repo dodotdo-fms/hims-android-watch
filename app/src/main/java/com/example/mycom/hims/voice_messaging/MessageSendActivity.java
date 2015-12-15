@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.R;
+import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.view.TimerView;
 import com.example.mycom.hims.data.Channels;
 import com.example.mycom.hims.model.Channel;
@@ -22,6 +24,8 @@ import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import retrofit.Callback;
@@ -35,6 +39,9 @@ public class MessageSendActivity extends CommonActivity{
     TimerView mTimerView;
     TextView mTv_Name;
     ImageView mIv_message;
+    Queue<VoiceMessage> messageQueue;
+    public static boolean isOnSendActivity = false;
+    public static String chanelId  = null;
     Button mBtn_play;
     boolean isSending = false;
     boolean isSending2 = false;
@@ -43,10 +50,40 @@ public class MessageSendActivity extends CommonActivity{
     private RecordManager recordManager = new RecordManager();
     Channel mChannel;
     String filename;
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(messageQueue.size()==0){
+                try {
+                    messagePlayThread.wait();
+                }catch (InterruptedException e){
+
+                }
+            }else{
+                messagePlayThread.run();
+            }
+        }
+    };
+
+    Thread messagePlayThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            VoiceMessage voiceMessage = messageQueue.peek();
+            play(voiceMessage.getFilepath());
+        }
+    });
     public void play(String filename) {
         Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "loup", filename));
         mediaPlayer = MediaPlayer.create(this, uri);
         mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                handler.sendMessage(handler.obtainMessage());
+            }
+        });
     }
 
     @Override
@@ -76,19 +113,10 @@ public class MessageSendActivity extends CommonActivity{
     	finish();
 	}
 
-    private void goMemberList(){
-//        Intent intent = new Intent(getApplicationContext(),ChannelMemberListActivity.class)
-//        intent.putExtra("position",cha)
-//        startActivity(intent);
+    private void receiveMessage(Bundle data){
 
+        messageQueue.add(new VoiceMessage());
     }
-
-    private void goPlay(){
-
-
-
-    }
-
 
     @Override
     public void onMappingXml() {
@@ -122,95 +150,13 @@ public class MessageSendActivity extends CommonActivity{
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(!isSending) {
-                        isSending = true;
-                        mTimerView.setDate(null);
-                        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
-                        StringBuilder sb = new StringBuilder();
-                        Random random = new Random();
-                        for (int i = 0; i < 20; i++) {
-                            char c = chars[random.nextInt(chars.length)];
-                            sb.append(c);
-                        }
-                        filename = sb.toString();
-                        recordManager.start(filename);
+                    if (!isSending) {
+                        startRecord();
                     }
 //
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     if (isSending && !isSending2) {
-                        isSending2 = true;
-                        mTimerView.setTimerStop(true);
-                        mBtn_play.setEnabled(false);
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLoadingDialog();
-                                recordManager.stop();
-                                //play();
-
-                                File file = new File(recordManager.filePath + filename);
-//                                byte[] bytes = new byte[0];
-//
-//                                RandomAccessFile f = null;
-//                                try {
-//                                    f = new RandomAccessFile(file, "r");
-//                                } catch (FileNotFoundException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                try {
-//                                    // Get and check length
-//                                    if (f != null) {
-//                                        long longlength = f.length();
-//                                        int length = (int) longlength;
-//                                        if (length != longlength)
-//                                            throw new IOException("File size >= 2 GB");
-//                                        // Read file and return data
-//                                        bytes = new byte[length];
-//                                        f.readFully(bytes);
-//                                    }
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                } finally {
-//                                    try {
-//                                        if (f != null) {
-//                                            f.close();
-//                                        }
-//                                    } catch (IOException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-
-                                // SEND FILE
-
-                                    ServerQuery.postMsg(mChannel.getId(), file, new Callback() {
-                                        @Override
-                                        public void onResponse(Response response, Retrofit retrofit) {
-                                            Log.e("ddd","aaa");
-                                            hideLoadingDialog();
-                                            isSending2 = false;
-                                            isSending = false;
-                                        }
-
-                                        @Override
-                                        public void onFailure(Throwable t) {
-                                            t.printStackTrace();
-                                            Log.e("ddd12", t.toString());
-
-                                            hideLoadingDialog();
-                                            isSending2 = false;
-                                            isSending = false;
-                                        }
-                                    });
-//                                    VMServerAPI.sendMsgToChannel(Integer.valueOf(mChannel.getId()),
-//                                            recordManager.filePath + filename[0], new OnAsyncTaskCompleted() {
-//                                                @Override
-//                                                public void onAsyncTaskCompleted(InputStream inputStream) {
-//                                                    mBtn_play.setEnabled(true);
-//                                                }
-//                                            });
-                            }
-                        }, 500);
+                        stopRecord();
                     }
                 }
                 return false;
@@ -220,15 +166,63 @@ public class MessageSendActivity extends CommonActivity{
 
     }
 
+    private void startRecord(){
+        isSending = true;
+        mTimerView.setDate(null);
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        filename = sb.toString();
+        recordManager.start(filename);
+    }
+
+    private void stopRecord(){
+        isSending2 = true;
+        mTimerView.setTimerStop(true);
+        mBtn_play.setEnabled(false);
+
+                showLoadingDialog();
+                recordManager.stop();
+                File file = new File(recordManager.filePath + filename);
+                ServerQuery.postMsg(mChannel.getId(), file, new Callback() {
+                    @Override
+                    public void onResponse(Response response, Retrofit retrofit) {
+                        Log.e("ddd", "aaa");
+                        hideLoadingDialog();
+                        isSending2 = false;
+                        isSending = false;
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        t.printStackTrace();
+                        Log.e("ddd12", t.toString());
+
+                        hideLoadingDialog();
+                        isSending2 = false;
+                        isSending = false;
+                    }
+                });
+
+    }
+
     @Override
     public void init() {
         super.init();
+        messageQueue = new LinkedList<>();
+
         mChannel = Channels.getInstance().getChannel(getIntent().getStringExtra("position"));
+        chanelId = mChannel.getId();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        isOnSendActivity = true;
 //        showLoadingDialog();
 //        ServerQuery.postChannelEnter(mChannel.getId(),new ServerCallback(){
 //            @Override
@@ -256,6 +250,8 @@ public class MessageSendActivity extends CommonActivity{
     @Override
     protected void onPause() {
         super.onPause();
+        isOnSendActivity = false;
+        chanelId = null;
 //        showLoadingDialog();
 //        ServerQuery.postChannelExit(mChannel.getId(), new ServerCallback() {
 //            @Override
@@ -280,4 +276,14 @@ public class MessageSendActivity extends CommonActivity{
 //        });
 
     }
+
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        receiveMessage(intent.getBundleExtra("data"));
+    }
+
+
 }

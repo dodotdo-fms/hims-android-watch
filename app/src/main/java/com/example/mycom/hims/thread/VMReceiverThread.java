@@ -13,7 +13,7 @@ import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.model.api_response.GetMessageResponse;
 import com.example.mycom.hims.server_interface.VMServerAPI;
 import com.example.mycom.hims.voice_messaging.RecordManager;
-import com.example.mycom.hims.voice_messaging.UIPageActivity;
+import com.example.mycom.hims.voice_messaging.ReceiveMessageActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -136,7 +136,7 @@ public class VMReceiverThread implements Runnable {
         }
 
         /* display the received message */
-        Intent intent = new Intent(curContext, UIPageActivity.class);
+        Intent intent = new Intent(curContext, ReceiveMessageActivity.class);
         intent.putExtra("username", msg.getMemberId());
         intent.putExtra("timestamp", String.valueOf(msg.getTimestamp().getTime()));
         intent.putExtra("channel_id", msg.getChannelId());

@@ -7,39 +7,36 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mycom.hims.R;
-import com.example.mycom.hims.thread.TimerDisplayThread;
-import com.example.mycom.hims.thread.VMReceiverThread;
+import com.example.mycom.hims.common.CommonActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 
-public class UIPageActivity extends Activity {
+public class ReceiveMessageActivity extends CommonActivity {
 
     private String userName;
-    private String fileName;
+    private String messageUrl;
+    private String filePath;
     private int channelId;
     private MediaPlayer mediaPlayer = null;
     private TextView mTv_name,mTv_date;
     public static boolean isPlaying = false;
     private String receiveTimeStamp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ui_page);
-
-        // YJ ADD
+        super.onCreate(savedInstanceState);
+        Bundle data = getIntent().getBundleExtra("data");
         Intent intent = getIntent();
-        userName = intent.getExtras().getString("username");
-        fileName = intent.getExtras().getString("timestamp");
+        userName = data.getString("sender_message");
+        messageUrl = intent.getExtras().getString("message");
         channelId = intent.getExtras().getInt("channel_id");
 
 
@@ -74,21 +71,31 @@ public class UIPageActivity extends Activity {
                 finish();
                 break;
             case R.id.ui_reply:
-                Intent intent = new Intent(UIPageActivity.this, MessageSendActivity.class);
+                Intent intent = new Intent(ReceiveMessageActivity.this, MessageSendActivity.class);
                 intent.putExtra("channel_id", channelId);
                 intent.putExtra("channel_name", "reply");
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 break;
             case R.id.rcvd_msg:
+                if(filePath == null){
+                    getMessage();
+                    return;
+
+                }
                 if (this.isPlaying == false) {
-                    play(getApplicationContext(),fileName);
+                    play(getApplicationContext(), messageUrl);
                     this.isPlaying = true;
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void getMessage(){
+        showLoadingDialog();
+
     }
 
 
