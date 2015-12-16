@@ -69,14 +69,14 @@ import retrofit.Retrofit;
 
     private void goLogin(String pw){
 //        showLoadingDialog();
-        ServerQuery.goLogin(my_id, pw, new Callback() {
+        ServerQuery.goLogin(my_id, pw,MyAccount.getInstance().getTokenId(), new Callback() {
 
 
             @Override
             public void onResponse(Response response, Retrofit retrofit) {
                 LoginResponse result = (LoginResponse) response.body();
                 if (result != null && !TextUtils.isEmpty(result.getToken())) {
-                    App.goGcmRegister();
+
                     App.isAliveMemory = true;
                     MyAccount.getInstance().setPosition(result.getPosition());
                     MyAccount.getInstance().setId(my_id);
@@ -238,6 +238,7 @@ import retrofit.Retrofit;
 
                         if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
                             goLogin(userPW);
+//                            hideLoadingDialog();
                         } else {
                             hideLoadingDialog();
                         }

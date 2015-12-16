@@ -31,12 +31,14 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        Log.e(TAG, "rece: ");
         String message = data.getString("message");
         String type = data.getString("type");
-        Log.e(TAG, "From: " + from);
+        Log.e(TAG, "From: " + data.getString("message_format"));
+        Log.e(TAG, "type: " + type);
         Log.e(TAG, "Message: " + message);
-        Intent intent = new Intent(getApplicationContext(), MessageSendActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), MessageSendActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        startActivity(intent);
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
@@ -99,11 +101,18 @@ public class MyGcmListenerService extends GcmListenerService {
         intent.putExtra("data", bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         if(MessageSendActivity.isOnSendActivity){
-            if(MessageSendActivity.chanelId.equals(bundle.get("channel_id")))
-            intent.setClass(getApplicationContext(), MessageSendActivity.class);
-            else
+            Log.e("ass","asd");
+            Log.e("chanenne1", MessageSendActivity.chanelId+"A");
+            Log.e("chanenne1", bundle.get("channel_id")+"A");
+            if(MessageSendActivity.chanelId.equals(bundle.get("channel_id"))) {
+                Log.e("ass1","asd");
+                intent.setClass(getApplicationContext(), MessageSendActivity.class);
+            }else {
+                Log.e("ass2","asd");
                 intent.setClass(getApplicationContext(), ReceiveMessageActivity.class);
+            }
         }else {
+            Log.e("ass3","asd");
             intent.setClass(getApplicationContext(), ReceiveMessageActivity.class);
         }
         startActivity(intent);

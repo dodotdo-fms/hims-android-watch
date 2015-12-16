@@ -16,14 +16,21 @@ import android.widget.TextView;
 
 import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.R;
+import com.example.mycom.hims.common.utill.FileConverter;
+import com.example.mycom.hims.common.utill.FileHelper;
 import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.view.TimerView;
 import com.example.mycom.hims.data.Channels;
 import com.example.mycom.hims.model.Channel;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -56,11 +63,7 @@ public class MessageSendActivity extends CommonActivity{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(messageQueue.size()==0){
-                try {
-                    messagePlayThread.wait();
-                }catch (InterruptedException e){
-
-                }
+                messagePlayThread.interrupt();
             }else{
                 messagePlayThread.run();
             }
@@ -70,18 +73,37 @@ public class MessageSendActivity extends CommonActivity{
     Thread messagePlayThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            VoiceMessage voiceMessage = messageQueue.peek();
-            play(voiceMessage.getFilepath());
+            VoiceMessage voiceMessage = messageQueue.poll();
+            Log.e("size",messageQueue.size() + "a");
+            play(voiceMessage);
         }
     });
-    public void play(String filename) {
-        Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "loup", filename));
+    public  void play(final VoiceMessage voiceMessage) {
+        Log.e("play", "asdwd");
+        Uri uri = Uri.fromFile(new File(voiceMessage.getFilepath()));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTv_Name.setText(voiceMessage.getSenderName());
+                mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.record_green_01));
+                mBtn_play.setEnabled(false);
+            }
+        });
         mediaPlayer = MediaPlayer.create(this, uri);
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                Log.e("end", "asdwd");
                 handler.sendMessage(handler.obtainMessage());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTv_Name.setText("");
+                        mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.main_btn));
+                        mBtn_play.setEnabled(true);
+                    }
+                });
             }
         });
     }
@@ -113,9 +135,42 @@ public class MessageSendActivity extends CommonActivity{
     	finish();
 	}
 
-    private void receiveMessage(Bundle data){
+    private synchronized void receiveMessage(final Bundle data){
 
-        messageQueue.add(new VoiceMessage());
+        final String path = data.getString("message");
+        Log.e("path", path);
+        ServerQuery.getMessage(path, new Callback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit) {
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    String  paths = FileConverter.convert(((ResponseBody)response.body()).bytes(),cal.getTimeInMillis()+"");
+                    VoiceMessage vm = new VoiceMessage();
+                    vm.setFilepath(paths);
+                    vm.setSenderName(data.getString("sender_name"));
+                    messageQueue.add(vm);
+
+                    if(messagePlayThread.isAlive()){
+                        return;
+                    }
+
+                    if (messagePlayThread.isInterrupted()) {
+                        messagePlayThread.run();
+                    }
+
+                    if(!messagePlayThread.isAlive()){
+                        messagePlayThread.start();
+                        return;
+                    }
+                }catch (Exception e){
+                    Log.e("ex",e.toString());
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("sdwd", t.toString());
+            }
+        });
     }
 
     @Override
@@ -195,13 +250,14 @@ public class MessageSendActivity extends CommonActivity{
                         hideLoadingDialog();
                         isSending2 = false;
                         isSending = false;
+                        mBtn_play.setEnabled(true);
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         t.printStackTrace();
                         Log.e("ddd12", t.toString());
-
+                        mBtn_play.setEnabled(true);
                         hideLoadingDialog();
                         isSending2 = false;
                         isSending = false;
@@ -214,14 +270,14 @@ public class MessageSendActivity extends CommonActivity{
     public void init() {
         super.init();
         messageQueue = new LinkedList<>();
-
-        mChannel = Channels.getInstance().getChannel(getIntent().getStringExtra("position"));
+        Log.e("id",getIntent().getStringExtra("channel_id")+"a");
+        mChannel = Channels.getInstance().getChannel(getIntent().getStringExtra("channel_id"));
         chanelId = mChannel.getId();
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStart () {
+        super.onStart();
         isOnSendActivity = true;
 //        showLoadingDialog();
 //        ServerQuery.postChannelEnter(mChannel.getId(),new ServerCallback(){
@@ -248,8 +304,8 @@ public class MessageSendActivity extends CommonActivity{
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         isOnSendActivity = false;
         chanelId = null;
 //        showLoadingDialog();

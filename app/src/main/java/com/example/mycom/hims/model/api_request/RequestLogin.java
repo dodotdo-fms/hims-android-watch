@@ -6,9 +6,11 @@ package com.example.mycom.hims.model.api_request;
 public class RequestLogin {
     String id;
     String pw;
+    String register_id;
 
-    public RequestLogin(String id,String pw){
+    public RequestLogin(String id,String pw,String register_id){
         this.id = id;
         this.pw = pw;
+        this.register_id = register_id;
     }
 }

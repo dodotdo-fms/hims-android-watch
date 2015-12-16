@@ -18,6 +18,7 @@ import com.example.mycom.hims.model.api_response.LogoutResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +39,8 @@ public class ServerQuery {
         call.enqueue(callback);
     }
 
-    public static void goLogin(String myid,String pw,retrofit.Callback callback){
-        Call<LoginResponse> call = ServiceGenerator.createService(ServerAPI.class).goLogin(new RequestLogin(myid, pw));
+    public static void goLogin(String myid,String pw,String token,retrofit.Callback callback){
+        Call<LoginResponse> call = ServiceGenerator.createService(ServerAPI.class).goLogin(new RequestLogin(myid, pw, token));
         call.enqueue(callback);
 
     }
@@ -93,10 +94,15 @@ public class ServerQuery {
             path = QueryHimsServer.BASIC_PATH + "/walkie/msg?=" +
                     "num=" + reqMsgNum;
         }
-        Call<GetMessageResponse> call = ServiceGenerator.createService(ServerAPI.class).getMessage(path);
+        Call<GetMessageResponse> call = ServiceGenerator.createService(ServerAPI.class).getMessages(path);
         call.enqueue(callback);
     }
 
+    public static void getMessage(String url, retrofit.Callback callback){
+
+        Call<ResponseBody> call = ServiceGenerator.createService(ServerAPI.class).getMessage(url);
+        call.enqueue(callback);
+    }
 
     public static void appendQueryParameter(Uri.Builder builder, String key, String value) {
         if (builder != null && !TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
@@ -121,41 +127,5 @@ public class ServerQuery {
         call.enqueue(callback);
     }
 
-    public static void postRegisterDeviceId(final String deviceId){
-        RequestRegisterDeviceId request = new RequestRegisterDeviceId("android",deviceId);
-        Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).postRegisterDeviceId(request);
-        call.enqueue(new retrofit.Callback() {
-
-            @Override
-            public void onResponse(Response response, Retrofit retrofit) {
-                MySharedPreferencesManager.getInstance().setDeviceId(deviceId);
-                Log.e("pushRegister", "Success Register DeviceID");
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e("pushRegister","Fail Register DeviceID");
-            }
-        });
-    }
-
-    public static void deleteRegisterDeviceId(){
-        String deviceId = MySharedPreferencesManager.getInstance().getDeviceId();
-        if(deviceId != null) {
-            Call<CommonResultReponse> call = ServiceGenerator.createService(ServerAPI.class).deleteRegisterDeviceId(MySharedPreferencesManager.getInstance().getDeviceId());
-            call.enqueue(new retrofit.Callback() {
-                @Override
-                public void onResponse(Response response, Retrofit retrofit) {
-                    MySharedPreferencesManager.getInstance().setDeviceId(null);
-                    Log.e("pushRegister", "Success unRegister DeviceID");
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    Log.e("pushRegister", "Fail unRegister DeviceID");
-                }
-            });
-        }
-    }
 
 }

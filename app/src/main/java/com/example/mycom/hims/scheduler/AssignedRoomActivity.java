@@ -230,9 +230,12 @@ public class AssignedRoomActivity extends CommonActivity {
                             count++;
                         }
                     }
+
                     mTv_willCleanRoom.setText(count + "");
                     Rooms.getInstance().setLists(result.getRooms());
 
+                }else{
+                    mTv_willCleanRoom.setText("0");
                 }
                 adapter = new RoomRecyclerViewAdpater(getApplicationContext());
                 recyclerView.setAdapter(adapter);
@@ -273,7 +276,6 @@ hideLoadingDialog();
         cleanerId = MyAccount.getInstance().getId();
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         refresh();
-
         recyclerView.setOnScrollListener(new MyRecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -302,7 +304,6 @@ hideLoadingDialog();
         loadingMoreContent = true;
         adapter.setFooterVisible(loadingMoreContent);
         loadingMoreContent = false;
-
     }
 
 }

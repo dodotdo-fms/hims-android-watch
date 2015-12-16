@@ -26,7 +26,9 @@ public abstract class CommonActivity extends Activity implements DefaultSetting 
     }
 
     public void showLoadingDialog(){
-        ((FrameLayout)rootView).addView(loadingView);
+         if(loadingView.getParent() != null) {
+             ((FrameLayout) rootView).addView(loadingView);
+         }
     }
 
     public void hideLoadingDialog(){

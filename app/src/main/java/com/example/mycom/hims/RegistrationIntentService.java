@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.mycom.hims.common.App;
+import com.example.mycom.hims.common.MyAccount;
 import com.example.mycom.hims.server_interface.ServerQuery;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -45,11 +46,12 @@ public class RegistrationIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 //            String token = instanceID.getId();
             // [END get_token]
+            MyAccount.getInstance().setTokenId(token);
             Log.i(TAG, "GCM Registration Token: " + token);
             Log.e(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
-            sendRegistrationToServer(token);
+//            sendRegistrationToServer(token);
 
             // Subscribe to topic channels
 //            subscribeTopics(token);
@@ -79,7 +81,7 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        ServerQuery.postRegisterDeviceId(token);
+//        ServerQuery.postRegisterDeviceId(token);
     }
 
     /**

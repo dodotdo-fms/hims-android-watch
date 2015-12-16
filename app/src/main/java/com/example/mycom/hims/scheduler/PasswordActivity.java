@@ -153,7 +153,7 @@ public class PasswordActivity extends CommonActivity {
     private void goLogin(){
         String id = getIntent().getExtras().getString("id");
         showLoadingDialog();
-        ServerQuery.goLogin(id, pass_number, new Callback() {
+        ServerQuery.goLogin(id, pass_number,MyAccount.getInstance().getTokenId(), new Callback() {
             @Override
             public void onResponse(Response response, Retrofit retrofit) {
                 LoginResponse result = (LoginResponse)response.body();

@@ -252,7 +252,8 @@ public class ChannelListActivity extends CommonActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ChannelListActivity.this, MessageSendActivity.class);
-                    intent.putExtra("position", item.getId());
+                    Log.e("itemid",item.getId()+"as");
+                    intent.putExtra("channel_id", item.getId());
                     startActivity(intent);
                 }
             });

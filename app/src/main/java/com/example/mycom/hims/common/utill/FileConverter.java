@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Omjoon on 2015. 12. 15..
@@ -41,4 +42,32 @@ public class FileConverter {
         }
         return file.getPath();
     }
+
+    public static String convert(byte[] decodedBytes,String path){
+
+
+        File file = new File(RecordManager.filePath + path);
+        if (file.exists() == false) {
+            try {
+                file.createNewFile();
+            } catch (IOException ioe) {
+                Log.e(TAG, "cannot create file: " +
+                        ioe.getStackTrace());
+            }
+        }
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(file, false);
+            os.write(decodedBytes);
+            os.close();
+        } catch (FileNotFoundException fnfe) {
+            Log.e(TAG, "file not found: " +
+                    fnfe.getStackTrace());
+        } catch (IOException ioe) {
+            Log.e(TAG, "IOException: " + ioe.getStackTrace());
+        }
+        return file.getPath();
+    }
+
+
 }

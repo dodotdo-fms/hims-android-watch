@@ -8,6 +8,7 @@ public class MyAccount {
     String position;
     String id;
     String password;
+    String tokenId;
     public static MyAccount getInstance(){
         if(instance == null){
             instance = new MyAccount();
@@ -38,5 +39,13 @@ public class MyAccount {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 }

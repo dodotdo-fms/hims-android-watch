@@ -36,6 +36,7 @@ public class App extends Application {
         context = getApplicationContext();
 //        setExceptionHandler();
         goScreenService();
+        goGcmRegister();
     }
 
     private void setExceptionHandler(){

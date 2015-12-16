@@ -12,9 +12,14 @@ import com.example.mycom.hims.model.api_response.LoginResponse;
 import com.example.mycom.hims.model.api_response.LogoutResponse;
 import com.example.mycom.hims.model.api_response.PostCleanResponse;
 import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.ResponseBody;
+
+import java.io.File;
+import java.util.concurrent.Future;
 
 import retrofit.Call;
 import retrofit.Callback;
+import retrofit.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
@@ -22,6 +27,7 @@ import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.Path;
+import retrofit.http.Streaming;
 import retrofit.http.Url;
 
 /**
@@ -47,7 +53,11 @@ public interface ServerAPI {
     Call<GetChannelResponse> getChannel(@Url String path);
 
     @GET
-    Call<GetMessageResponse> getMessage(@Url String path);
+    Call<GetMessageResponse> getMessages(@Url String path);
+
+    @GET
+    @Streaming
+    Call<ResponseBody> getMessage(@Url String path);
 
     @GET("/api/walkie/channel/{channelId}/enter")
     Call<CommonResultReponse> postChannelEnter(@Path("channelId") String channelId);

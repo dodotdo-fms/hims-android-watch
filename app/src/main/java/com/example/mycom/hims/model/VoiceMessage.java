@@ -1,7 +1,6 @@
 package com.example.mycom.hims.model;
 
-import android.text.format.DateFormat;
-
+import java.io.File;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
@@ -33,6 +32,10 @@ public class VoiceMessage {
 	private int channelId;
 
 	private String filepath;
+
+	private File file;
+
+	private String senderName;
 
 	public int getChannelId() {
 		return channelId;
@@ -104,5 +107,21 @@ public class VoiceMessage {
 
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public String getSenderName() {
+		return senderName;
+	}
+
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
 	}
 }
