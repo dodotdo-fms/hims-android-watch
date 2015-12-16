@@ -102,11 +102,6 @@
         <activity
             android:name=".voice_messaging.ChannelListActivity"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".voice_messaging.MessageSendActivity"
@@ -129,7 +124,6 @@
         <activity
             android:name=".dialog.RoomAlreadyCleanDialogAcitivity"
             android:label="@string/title_activity_room_already_clean_dialog_acitivity" />
-        ]
         <activity
             android:name=".dialog.AreYouSureDialogActivity"
             android:label="@string/title_activity_are_you_sure_dialog" />

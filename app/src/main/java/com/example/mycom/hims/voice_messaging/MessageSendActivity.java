@@ -74,12 +74,11 @@ public class MessageSendActivity extends CommonActivity{
         @Override
         public void run() {
             VoiceMessage voiceMessage = messageQueue.poll();
-            Log.e("size",messageQueue.size() + "a");
             play(voiceMessage);
         }
     });
+
     public  void play(final VoiceMessage voiceMessage) {
-        Log.e("play", "asdwd");
         Uri uri = Uri.fromFile(new File(voiceMessage.getFilepath()));
         mediaPlayer = MediaPlayer.create(this, uri);
         mediaPlayer.start();
@@ -96,20 +95,28 @@ public class MessageSendActivity extends CommonActivity{
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                Log.e("end", "asdwd");
                 handler.sendMessage(handler.obtainMessage());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mTimerView.setTimerStop(true);
-                        mTimerView.setText("");
-                        mTv_Name.setText("");
-                        mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.main_btn));
-                        mBtn_play.setEnabled(true);
+                       stop();
                     }
                 });
             }
         });
+    }
+
+    private void stop(){
+        try {
+            mediaPlayer.stop();
+        }catch (Exception e){
+
+        }
+        mTimerView.setTimerStop(true);
+        mTimerView.setText("");
+        mTv_Name.setText("");
+        mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.main_btn));
+        mBtn_play.setEnabled(true);
     }
 
     @Override
@@ -121,9 +128,7 @@ public class MessageSendActivity extends CommonActivity{
     public void onClick(View v){
         switch(v.getId()){
             case R.id.list:
-            	Intent intent_walkie = new Intent(MessageSendActivity.this, ChannelListActivity.class);
-                startActivity(intent_walkie);
-            	finish();
+            	onBackPressed();
                 break;
             default:
                 break;
@@ -132,8 +137,10 @@ public class MessageSendActivity extends CommonActivity{
     }
 
 
+
 	@Override
 	public void onBackPressed() {
+        stop();
 		Intent intent_walkie = new Intent(MessageSendActivity.this, ChannelListActivity.class);
         startActivity(intent_walkie);
     	finish();
@@ -158,19 +165,20 @@ public class MessageSendActivity extends CommonActivity{
                         return;
                     }
 
+
                     try {
                         messagePlayThread.start();
                     }catch (Exception e){
-                        messagePlayThread.run();
+                        handler.sendMessage(handler.obtainMessage());
                     }
                 } catch (Exception e) {
-                    Log.e("ex", e.toString());
+                    Log.e("exception", e.toString());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("sdwd", t.toString());
+                Log.e("exception", t.toString());
             }
         });
     }

@@ -32,26 +32,22 @@ import retrofit.Retrofit;
 
 public class ReceiveMessageActivity extends CommonActivity {
 
-    private String userName;
-    private String messageUrl;
     private String filePath;
-    private int channelId;
+    private String fileName;
     private MediaPlayer mediaPlayer = null;
     private TextView mTv_name;
     TimerView mTv_date;
     public static boolean isPlaying = false;
     private String receiveTimeStamp;
     ImageView mIv_play;
+    Bundle data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ui_page);
         super.onCreate(savedInstanceState);
-        Bundle data = getIntent().getBundleExtra("data");
         Intent intent = getIntent();
-        messageUrl = intent.getExtras().getString("message");
-        channelId = intent.getExtras().getInt("channel_id");
-
+        data = intent.getBundleExtra("data");
 
         mTv_name = (TextView) findViewById(R.id.user_name);
 
@@ -68,7 +64,7 @@ public class ReceiveMessageActivity extends CommonActivity {
                 stop();
             }
         });
-        mTv_name.setText(intent.getBundleExtra("data").getString("sender_name"));
+        mTv_name.setText(data.getString("sender_name"));
     }
 
 
@@ -143,7 +139,7 @@ public class ReceiveMessageActivity extends CommonActivity {
                 break;
             case R.id.ui_reply:
                 Intent intent = new Intent(ReceiveMessageActivity.this, MessageSendActivity.class);
-                intent.putExtra("channel_id", channelId);
+                intent.putExtra("channel_id", data.getString("channel_id"));
                 intent.putExtra("channel_name", "reply");
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -151,8 +147,8 @@ public class ReceiveMessageActivity extends CommonActivity {
             case R.id.rcvd_msg:
 
                 if (this.isPlaying == false) {
-                    if(filePath == null) {
-                        receiveMessage(getIntent().getBundleExtra("data"));
+                    if(filePath == null || !fileName.equals(data.getString("message"))) {
+                        receiveMessage();
                     }else{
                         play();
                     }
@@ -168,14 +164,14 @@ public class ReceiveMessageActivity extends CommonActivity {
 
 
 
-    private synchronized void receiveMessage(final Bundle data){
+    private synchronized void receiveMessage(){
         showLoadingDialog();
         final String path = data.getString("message");
-        Log.e("path", path);
         ServerQuery.getMessage(path, new Callback() {
             @Override
             public void onResponse(Response response, Retrofit retrofit) {
                 try {
+                    fileName = path;
                     Calendar cal = Calendar.getInstance();
                     filePath = FileConverter.convert(((ResponseBody) response.body()).bytes(), cal.getTimeInMillis() + "");
                     VoiceMessage vm = new VoiceMessage();
@@ -184,14 +180,14 @@ public class ReceiveMessageActivity extends CommonActivity {
                     hideLoadingDialog();
                     play(vm);
                 } catch (Exception e) {
-                    Log.e("ex", e.toString());
+                    Log.e("exception", e.toString());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
                 hideLoadingDialog();
-                Log.e("sdwd", t.toString());
+                Log.e("exception", t.toString());
             }
         });
     }

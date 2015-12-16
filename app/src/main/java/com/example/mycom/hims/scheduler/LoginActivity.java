@@ -47,6 +47,7 @@ import retrofit.Retrofit;
     String p_UserPass;
     boolean scrollCheck = false;
     boolean loadingMoreContent =false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
@@ -54,21 +55,13 @@ import retrofit.Retrofit;
         SharedPreferences prefs = getSharedPreferences("PrefName", MODE_PRIVATE);
         p_userID = prefs.getString("p_UserID", "");
         p_UserPass = prefs.getString("p_UserPass", "");
-
-        font = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
-
-
-
-
-
-
+        font = App.font;
     }
 
 
 
 
     private void goLogin(String pw){
-//        showLoadingDialog();
         ServerQuery.goLogin(my_id, pw,MyAccount.getInstance().getTokenId(), new Callback() {
 
 
@@ -87,6 +80,7 @@ import retrofit.Retrofit;
                         MyAccount.getInstance().setPosition(result.getPosition());
                         MySharedPreferencesManager.getInstance().setMyPosition(result.getPosition());
                         startActivity(lockScreenIntent);
+                        finish();
                     }
                 }
                 hideLoadingDialog();
@@ -226,25 +220,26 @@ import retrofit.Retrofit;
         ServerQuery.getUsers(new Callback() {
             @Override
             public void onResponse(Response response, Retrofit retrofit) {
-                Log.e("ass","Asss");
                 GetUsersResponse result = (GetUsersResponse) response.body();
                 if (result != null && result.getUsers() != null && result.getUsers().size() > 0) {
                     Users.getInstance().setUsers(result.getUsers());
                     if (Users.getInstance().isExistMe(p_userID)) {
                         my_id = p_userID;
-                        Toast.makeText(LoginActivity.this, "AutoLogin: " + p_userID, Toast.LENGTH_LONG).show();
                         MySharedPreferencesManager.getInstance().putMyID(my_id);
                         String userPW = MySharedPreferencesManager.getInstance().getMyPassword();
 
                         if (!TextUtils.isEmpty(my_id) && !TextUtils.isEmpty(userPW)) {
                             goLogin(userPW);
-//                            hideLoadingDialog();
                         } else {
                             hideLoadingDialog();
+                            recyclerViewInit();
+                            return;
                         }
 
                     } else {
                         hideLoadingDialog();
+                        recyclerViewInit();
+                        return;
                     }
                 }
 

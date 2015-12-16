@@ -30,12 +30,9 @@ public class PasswordActivity extends CommonActivity {
     private TextView pass_num;
     String pass_number="";
     String manager_name;
-//    private RelativeLayout lay;
     boolean isBack = true;
     int pass_length = 0;
-
     String password;
-
     ImageView mBtn_cancel;
 
     @Override
@@ -75,7 +72,6 @@ public class PasswordActivity extends CommonActivity {
                 }
             }
         });
-//        lay.setVisibility(View.GONE);
     }
 
     public void check_condition(String str){
@@ -88,9 +84,6 @@ public class PasswordActivity extends CommonActivity {
 
     public void onClick(View v){
         switch(v.getId()){
-//            case R.id.ok_btn:
-////                lay.setVisibility(View.GONE);
-//                break;
             case R.id.btn1:
                 check_condition("1");
                 break;

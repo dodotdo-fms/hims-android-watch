@@ -16,8 +16,6 @@ import java.util.Date;
 public class TimerView extends TextView {
     private final static String TAG = "DigitalClock";
 
-    private String mFormat = "yyyy.M.d E";
-
     private Runnable mTicker;
     private android.os.Handler mHandler;
 
@@ -55,8 +53,6 @@ public class TimerView extends TextView {
                         listener.onStop();
                         return;
                     }
-                    Log.e("re1",mTickerStopped+"");
-                    Log.e("go","go");
                     setText(DateToStringAPI.getString(defaultdate, "mm:ss"));
                     invalidate();
                     defaultdate.setTime(defaultdate.getTime() + 1000);
@@ -99,8 +95,6 @@ public class TimerView extends TextView {
                         listener.onStop();
                         return;
                     }
-                    Log.e("re1",mTickerStopped+"");
-                    Log.e("go","go");
                     setText(DateToStringAPI.getString(mDate, "mm:ss"));
                     invalidate();
                     mDate.setTime(mDate.getTime() - 1000);
@@ -147,8 +141,5 @@ public class TimerView extends TextView {
         mTickerStopped = true;
     }
 
-    public void setFormat(String format) {
-        mFormat = format;
-    }
 
 }
