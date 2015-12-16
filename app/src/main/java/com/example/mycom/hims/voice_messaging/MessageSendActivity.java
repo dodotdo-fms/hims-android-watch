@@ -81,16 +81,18 @@ public class MessageSendActivity extends CommonActivity{
     public  void play(final VoiceMessage voiceMessage) {
         Log.e("play", "asdwd");
         Uri uri = Uri.fromFile(new File(voiceMessage.getFilepath()));
+        mediaPlayer = MediaPlayer.create(this, uri);
+        mediaPlayer.start();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mTimerView.setTime(mediaPlayer.getDuration());
                 mTv_Name.setText(voiceMessage.getSenderName());
                 mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.record_green_01));
                 mBtn_play.setEnabled(false);
             }
         });
-        mediaPlayer = MediaPlayer.create(this, uri);
-        mediaPlayer.start();
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -99,6 +101,8 @@ public class MessageSendActivity extends CommonActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mTimerView.setTimerStop(true);
+                        mTimerView.setText("");
                         mTv_Name.setText("");
                         mBtn_play.setBackgroundDrawable(getResources().getDrawable(R.drawable.main_btn));
                         mBtn_play.setEnabled(true);
@@ -144,28 +148,26 @@ public class MessageSendActivity extends CommonActivity{
             public void onResponse(Response response, Retrofit retrofit) {
                 try {
                     Calendar cal = Calendar.getInstance();
-                    String  paths = FileConverter.convert(((ResponseBody)response.body()).bytes(),cal.getTimeInMillis()+"");
+                    String paths = FileConverter.convert(((ResponseBody) response.body()).bytes(), cal.getTimeInMillis() + "");
                     VoiceMessage vm = new VoiceMessage();
                     vm.setFilepath(paths);
                     vm.setSenderName(data.getString("sender_name"));
                     messageQueue.add(vm);
 
-                    if(messagePlayThread.isAlive()){
+                    if (messagePlayThread.isAlive()) {
                         return;
                     }
 
-                    if (messagePlayThread.isInterrupted()) {
+                    try {
+                        messagePlayThread.start();
+                    }catch (Exception e){
                         messagePlayThread.run();
                     }
-
-                    if(!messagePlayThread.isAlive()){
-                        messagePlayThread.start();
-                        return;
-                    }
-                }catch (Exception e){
-                    Log.e("ex",e.toString());
+                } catch (Exception e) {
+                    Log.e("ex", e.toString());
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Log.e("sdwd", t.toString());

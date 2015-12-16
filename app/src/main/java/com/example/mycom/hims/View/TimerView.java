@@ -83,6 +83,50 @@ public class TimerView extends TextView {
         }
     }
 
+    public void setTime(long time){
+        mTickerStopped = false;
+        mHandler = new android.os.Handler();
+        if(time != 0) {
+            mDate = new Date(time);
+            mTicker = new Runnable() {
+                public void run() {
+                    if (mTickerStopped) {
+                        Log.e("re",mTickerStopped+"");
+                        listener.onStop();
+                        return;
+                    }
+                    if (0 >= mDate.getTime()) {
+                        listener.onStop();
+                        return;
+                    }
+                    Log.e("re1",mTickerStopped+"");
+                    Log.e("go","go");
+                    setText(DateToStringAPI.getString(mDate, "mm:ss"));
+                    invalidate();
+                    mDate.setTime(mDate.getTime() - 1000);
+                    mHandler.postDelayed(mTicker, 1000);
+                }
+            };
+            mTicker.run();
+        }else{
+            final Date defaultdate = new Date();
+            defaultdate.setTime(0);
+            mTicker = new Runnable() {
+                public void run() {
+                    if (mTickerStopped) {
+                        listener.onStop();
+                        return;
+                    }
+                    setText(DateToStringAPI.getString(defaultdate, "mm:ss"));
+                    invalidate();
+                    defaultdate.setTime(defaultdate.getTime() + 1000);
+                    mHandler.postDelayed(mTicker, 1000);
+                }
+            };
+            mTicker.run();
+        }
+    }
+
     public void setTimerStop(boolean bool){
         mTickerStopped = bool;
     }

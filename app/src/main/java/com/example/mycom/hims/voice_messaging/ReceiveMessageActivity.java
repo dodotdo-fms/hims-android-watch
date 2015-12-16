@@ -17,6 +17,7 @@ import com.example.mycom.hims.common.CommonActivity;
 import com.example.mycom.hims.common.utill.FileConverter;
 import com.example.mycom.hims.model.VoiceMessage;
 import com.example.mycom.hims.server_interface.ServerQuery;
+import com.example.mycom.hims.view.TimerView;
 import com.squareup.okhttp.ResponseBody;
 
 import java.io.File;
@@ -36,7 +37,8 @@ public class ReceiveMessageActivity extends CommonActivity {
     private String filePath;
     private int channelId;
     private MediaPlayer mediaPlayer = null;
-    private TextView mTv_name,mTv_date;
+    private TextView mTv_name;
+    TimerView mTv_date;
     public static boolean isPlaying = false;
     private String receiveTimeStamp;
     ImageView mIv_play;
@@ -58,26 +60,41 @@ public class ReceiveMessageActivity extends CommonActivity {
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("MMM d, h:mm a");
         receiveTimeStamp = format.format(now);
-        mTv_date = (TextView) findViewById(R.id.received_time);
+        mTv_date = (TimerView) findViewById(R.id.received_time);
         mTv_date.setText(receiveTimeStamp);
         mIv_play = (ImageView)findViewById(R.id.rcvd_msg);
+
+        mTv_date.setListener(new TimerView.TimerStopListener() {
+            @Override
+            public void onStop() {
+                stop();
+            }
+        });
 
     }
 
 
+    private void stop(){
+        mTv_date.setTimerStop(true);
+        mIv_play.setImageDrawable(getResources().getDrawable(R.drawable.play));
+        mTv_date.setText(receiveTimeStamp);
+        mediaPlayer.stop();
+        isPlaying = false;
+    }
 
     public  void play(final VoiceMessage voiceMessage) {
         Log.e("play", "asdwd");
         Uri uri = Uri.fromFile(new File(voiceMessage.getFilepath()));
+        mediaPlayer = MediaPlayer.create(this, uri);
+        mediaPlayer.start();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mTv_name.setText(voiceMessage.getSenderName());
+                mTv_date.setTime(mediaPlayer.getDuration());
                 mIv_play.setImageDrawable(getResources().getDrawable(R.drawable.stop_1));
             }
         });
-        mediaPlayer = MediaPlayer.create(this, uri);
-        mediaPlayer.start();
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -85,13 +102,40 @@ public class ReceiveMessageActivity extends CommonActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mTv_name.setText("");
-                        mIv_play.setImageDrawable(getResources().getDrawable(R.drawable.play));
+                     stop();
                     }
                 });
             }
         });
     }
+
+    public void play() {
+        Log.e("play", "asdwd");
+        Uri uri = Uri.fromFile(new File(filePath));
+        mediaPlayer = MediaPlayer.create(this, uri);
+        mediaPlayer.start();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTv_date.setTime(mediaPlayer.getDuration());
+                mIv_play.setImageDrawable(getResources().getDrawable(R.drawable.stop_1));
+            }
+        });
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                Log.e("end", "asdwd");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stop();
+                    }
+                });
+            }
+        });
+    }
+
     // YJ ADD
     public void onClick(View v) {
 
@@ -109,11 +153,14 @@ public class ReceiveMessageActivity extends CommonActivity {
             case R.id.rcvd_msg:
 
                 if (this.isPlaying == false) {
-                    receiveMessage(getIntent().getBundleExtra("data"));
+                    if(filePath == null) {
+                        receiveMessage(getIntent().getBundleExtra("data"));
+                    }else{
+                        play();
+                    }
                     this.isPlaying = true;
                 }else{
-                    mediaPlayer.stop();
-                    isPlaying = false;
+                    stop();
                 }
                 break;
             default:
@@ -132,9 +179,9 @@ public class ReceiveMessageActivity extends CommonActivity {
             public void onResponse(Response response, Retrofit retrofit) {
                 try {
                     Calendar cal = Calendar.getInstance();
-                    String paths = FileConverter.convert(((ResponseBody) response.body()).bytes(), cal.getTimeInMillis() + "");
+                    filePath = FileConverter.convert(((ResponseBody) response.body()).bytes(), cal.getTimeInMillis() + "");
                     VoiceMessage vm = new VoiceMessage();
-                    vm.setFilepath(paths);
+                    vm.setFilepath(filePath);
                     vm.setSenderName(data.getString("sender_name"));
                     hideLoadingDialog();
                     play(vm);
@@ -161,7 +208,11 @@ public class ReceiveMessageActivity extends CommonActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent != null)
-        setIntent(intent);
+        if(intent != null) {
+            setIntent(intent);
+            mTv_name.setText(getIntent().getBundleExtra("data").getString("sender_name"));
+        }
     }
+
+
 }
