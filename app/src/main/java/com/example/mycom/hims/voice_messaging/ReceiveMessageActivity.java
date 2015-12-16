@@ -49,13 +49,11 @@ public class ReceiveMessageActivity extends CommonActivity {
         super.onCreate(savedInstanceState);
         Bundle data = getIntent().getBundleExtra("data");
         Intent intent = getIntent();
-        userName = data.getString("sender_message");
         messageUrl = intent.getExtras().getString("message");
         channelId = intent.getExtras().getInt("channel_id");
 
 
         mTv_name = (TextView) findViewById(R.id.user_name);
-        mTv_name.setText(userName);
 
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("MMM d, h:mm a");
@@ -70,7 +68,7 @@ public class ReceiveMessageActivity extends CommonActivity {
                 stop();
             }
         });
-
+        mTv_name.setText(intent.getBundleExtra("data").getString("sender_name"));
     }
 
 
@@ -210,7 +208,7 @@ public class ReceiveMessageActivity extends CommonActivity {
         super.onNewIntent(intent);
         if(intent != null) {
             setIntent(intent);
-            mTv_name.setText(getIntent().getBundleExtra("data").getString("sender_name"));
+            mTv_name.setText(intent.getBundleExtra("data").getString("sender_name"));
         }
     }
 
